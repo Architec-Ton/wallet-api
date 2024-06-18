@@ -3,13 +3,12 @@ import uuid
 from typing import List
 from faker import Faker
 
-from view.game.game import GameOut
+from wallet.view.game.game import GameOut
 
 fake = Faker()
 
 from fastapi import APIRouter
 
-from view.game.games import GameCategoryOut
 
 router = APIRouter()
 

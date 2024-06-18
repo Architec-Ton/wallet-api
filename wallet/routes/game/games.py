@@ -7,7 +7,7 @@ fake = Faker()
 
 from fastapi import APIRouter, Query
 
-from view.game.games import GameCategoryOut
+from wallet.view.game.games import GameCategoryOut
 
 router = APIRouter()
 
