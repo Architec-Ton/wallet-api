@@ -35,7 +35,7 @@ class JWTBearer(HTTPBearer):
         isTokenValid: bool = False
 
         try:
-            payload = {"user": "test"}
+            payload = {"token": jwtoken}
             # payload = decode_jwt(jwtoken)
         except:
             payload = None

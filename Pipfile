@@ -9,6 +9,7 @@ pydantic = "*"
 unicorn = "*"
 tortoise-orm = {version = "*", extras = ["asyncpg"]}
 faker = "*"
+python-jose = {version = "*", extras = ["cryptography"]}
 
 [dev-packages]
 flake8 = "*"

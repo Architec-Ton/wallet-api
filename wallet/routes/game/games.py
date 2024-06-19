@@ -31,5 +31,8 @@ mock = [
 
 
 @router.get("s", response_model=List[GameCategoryOut])
-async def get_games(search: str | None = Query(default=None)):
+async def get_games(
+    search: str | None = Query(default=None),
+    categoryId: str | None = Query(default=None),
+):
     return mock
