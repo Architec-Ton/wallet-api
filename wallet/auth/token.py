@@ -19,7 +19,7 @@ pk = load_jwt_key('api.pem')
 def create_token(data):
     to_encode = data
 
-    expire = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=1)
+    expire = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=31)
     to_encode.update({"exp": expire})
     to_encode.update({"iat": datetime.datetime.now(datetime.timezone.utc)})
     try:

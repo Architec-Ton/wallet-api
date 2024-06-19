@@ -3,12 +3,13 @@ import uuid
 from typing import List
 from faker import Faker
 
+from wallet.auth import get_user
+from wallet.view.auth.user import UserOut
 from wallet.view.game.game import GameOut
 
 fake = Faker()
 
-from fastapi import APIRouter
-
+from fastapi import APIRouter, Depends
 
 router = APIRouter()
 
@@ -35,5 +36,8 @@ mock = {
 
 
 @router.get("/{game_id}", response_model=GameOut)
-async def get_game(game_id: uuid.UUID):
+async def get_game(
+    game_id: uuid.UUID,
+    user: UserOut = Depends(get_user),
+):
     return mock

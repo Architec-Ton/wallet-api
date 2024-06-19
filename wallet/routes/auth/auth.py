@@ -19,10 +19,17 @@ async def post_auth(init_data: AuthIn):
 
     payload = {
         "name": "John Dou",
+        "lang": (
+            init_data.init_data_raw.user.language_code
+            if init_data.init_data_raw
+            else "en-En"
+        ),
         "address": init_data.init_ton.address if init_data.init_ton else "sample",
         "net": "ton",
         "iss": uuid.uuid4().hex,
-        "sub": init_data.init_data_raw.user.id if init_data.init_data_raw else 123,
+        "sub": (
+            f"{init_data.init_data_raw.user.id}" if init_data.init_data_raw else "123"
+        ),
     }
     access_token = create_token(payload)
     return AuthOut(access_token=access_token)

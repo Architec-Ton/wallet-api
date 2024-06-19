@@ -1,19 +1,9 @@
 from typing import List
 
-
+from .user import UserIn
 from ..base import ArchitectonBase, BaseModel
 from pydantic import Field
 from uuid import UUID
-
-
-class UserIn(ArchitectonBase):
-    allows_write_to_pm: bool
-    first_name: str
-    id: int
-    is_premium: bool
-    language_code: str
-    last_name: str
-    username: str
 
 
 class InitDataIn(ArchitectonBase):
