@@ -17,7 +17,7 @@ def load_jwt_key(filename: str):
 
 
 
-pubk = load_jwt_key('api.crt')
+pubk = load_jwt_key('./security/api.crt')
 
 class JWTBearer(HTTPBearer):
     def __init__(self, auto_error: bool = True):

@@ -13,7 +13,7 @@ def load_jwt_key(filename: str):
 
 
 
-pk = load_jwt_key('api.pem')
+pk = load_jwt_key('./security/api.pem')
 
 
 def create_token(data):
