@@ -1,4 +1,4 @@
-import log
+import logging
 
 import uvicorn
 
@@ -7,14 +7,13 @@ log_config["formatters"]["access"]["fmt"] = "%(asctime)s - %(levelname)s - %(mes
 log_config["formatters"]["default"]["fmt"] = "%(asctime)s - %(levelname)s - %(message)s"
 
 if __name__ == "__main__":
-    logging.info("Application GATEWAY RUN ")
+    logging.info("Application Wallet RUN ")
     uvicorn.run(
         "app:app",
         host="0.0.0.0",
-        port=8008,
+        port=8000,
         reload=True,
-        debug=True,
         workers=1,
         log_config=log_config,
-        reload_dirs=["../admin", "../../api-stretch-core/stretchcore"],
+        reload_dirs=["./"],
     )

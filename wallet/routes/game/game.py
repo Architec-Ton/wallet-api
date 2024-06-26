@@ -38,6 +38,6 @@ mock = {
 @router.get("/{game_id}", response_model=GameOut)
 async def get_game(
     game_id: uuid.UUID,
-    user: UserOut = Depends(get_user),
+    # user: UserOut = Depends(get_user),
 ):
     return mock

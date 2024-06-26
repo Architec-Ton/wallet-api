@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 import logging
 from wallet.errors import APIException
@@ -19,6 +20,15 @@ app = FastAPI(
     redoc_url=None,
     version="0.2.0",
     openapi_url=f"{app_base}/architecton.json",
+)
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins="*",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 

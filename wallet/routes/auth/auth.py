@@ -1,3 +1,4 @@
+import logging
 import random
 import uuid
 from typing import List
@@ -5,6 +6,7 @@ from faker import Faker
 
 from fastapi import APIRouter
 
+from wallet.auth.auth import telegram_validate
 from wallet.auth.token import create_token
 from wallet.view.auth.auth import AuthIn, AuthOut
 
@@ -22,7 +24,7 @@ async def post_auth(init_data: AuthIn):
         "lang": (
             init_data.init_data_raw.user.language_code
             if init_data.init_data_raw
-            else "en-En"
+            else "en"
         ),
         "address": init_data.init_ton.address if init_data.init_ton else "sample",
         "net": "ton",
@@ -31,5 +33,9 @@ async def post_auth(init_data: AuthIn):
             f"{init_data.init_data_raw.user.id}" if init_data.init_data_raw else "123"
         ),
     }
+
     access_token = create_token(payload)
+    s = telegram_validate(init_data)
+    logging.info(f"Validate: \n{s}")
+
     return AuthOut(access_token=access_token)
