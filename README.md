@@ -8,9 +8,17 @@ Welcome to the repository for our backend API project, built with FastAPI. This 
 
 Clone this repository to set up the project locally, then proceed to the next instructions:
 
+#### Create security key
+```bash
+mkdir security && cd security
+openssl genrsa -out api.pem 2048
+openssl rsa -in api.pem -pubout -outform PEM -out api.crt
+cd ..
+```
+#### 
 ```bash
 docker build . -t <container_name>
-docker run <container_name>
+docker run -v ./security:./security <container_name>
 ```
 
 ---

@@ -7,16 +7,17 @@ from uuid import UUID
 
 
 class NftMetaOut(ArchitectonBase):
+    address: str | None = Field(default=None)
     name: str = Field()
     description: str = Field()
-    image: List = Field(default=[])
-    image_data: str | None = Field()
+    image: str | None= Field(default=None)
+    image_data: str | None = Field(default=None)
     uri: str | None = Field(default=None)
 
 
 class JettonMetaOut(NftMetaOut):
-    symbol: str = Field()
-    decimals: int = Field()
+    symbol: str | None= Field(default=None)
+    decimals: int | None= Field(default=None)
     amount_style: str | None = Field(default=None)
     render_type: str | None = Field(default=None)
 
@@ -24,6 +25,7 @@ class JettonMetaOut(NftMetaOut):
 class CoinType(str, Enum):
     jetton = "jetton"
     nft = "nft"
+    ton = "ton"
 
 
 class CoinOut(ArchitectonBase):
