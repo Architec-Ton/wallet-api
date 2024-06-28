@@ -18,24 +18,23 @@ async def post_auth(init_data: AuthIn):
 
     # TODO: Check hash
     # TODO: Check signature
+    logging.info(init_data)
 
     payload = {
-        "name": "John Dou",
-        "lang": (
-            init_data.init_data_raw.user.language_code
-            if init_data.init_data_raw
-            else "en"
-        ),
-        "address": init_data.init_ton.address if init_data.init_ton else "sample",
-        "net": "ton",
         "iss": uuid.uuid4().hex,
-        "sub": (
-            f"{init_data.init_data_raw.user.id}" if init_data.init_data_raw else "123"
-        ),
     }
 
+    if init_data.init_ton:
+        payload["address"] = init_data.init_ton.address
+        payload["net"] = "testnet"
+
+    if init_data.init_data_raw:
+        payload["name"] = init_data.init_data_raw.user.username
+        payload["lang"] = init_data.init_data_raw.user.language_code
+        payload["sub"] = init_data.init_data_raw.user.id
+
     access_token = create_token(payload)
-    s = telegram_validate(init_data)
-    logging.info(f"Validate: \n{s}")
+    # s = telegram_validate(init_data)
+    # logging.info(f"Validate: \n{s}")
 
     return AuthOut(access_token=access_token)
