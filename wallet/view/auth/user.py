@@ -6,13 +6,13 @@ from uuid import UUID
 
 
 class UserIn(ArchitectonBase):
-    allows_write_to_pm: bool
+    allows_write_to_pm: bool | None = Field(default=None)
     first_name: str
-    id: int
-    is_premium: bool
-    language_code: str
-    last_name: str
-    username: str
+    id: int | None = Field(default=None)
+    is_premium: bool | None = Field(default=None)
+    language_code: str | None = Field(default=None)
+    last_name: str | None = Field(default=None)
+    username: str | None = Field(default=None)
 
 
 class UserOut(ArchitectonBase):
