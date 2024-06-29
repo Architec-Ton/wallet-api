@@ -5,11 +5,13 @@ name = "pypi"
 
 [packages]
 fastapi = "*"
-pydantic = "*"
+pydantic = ">=2.7.4"
 unicorn = "*"
 tortoise-orm = {version = "*", extras = ["asyncpg"]}
 faker = "*"
 python-jose = {version = "*", extras = ["cryptography"]}
+tontools = "*"
+bitarray = ">=2.9.2"
 
 [dev-packages]
 flake8 = "*"

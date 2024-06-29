@@ -14,7 +14,7 @@ class InitDataIn(ArchitectonBase):
 
 
 class InitTonIn(ArchitectonBase):
-    address: str = Field(default="UQAeV4crAaUoCJo5igUIzosJXcOjtb4W7ff7Qr0DrgXPRle_")
+    address: str = Field()
     # public_key: str = Field(default="full")
     signature: str | None = Field(default="full")
 

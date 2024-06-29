@@ -56,12 +56,12 @@ class JWTBearer(HTTPBearer):
 def get_user(token_data=Depends(JWTBearer())) -> UserOut:
 
     user =  UserOut.model_validate({
-        "name" : token_data['name'],
-        "tgId": int(token_data['sub']),
+        "name" : token_data['name'] if 'name' in token_data else None,
+        "tgId": int(token_data['sub']) if 'sub' in token_data else None,
         "sessionId":token_data['iss'],
-        "net": token_data['net'],
-        "lang": token_data['lang'],
-        "address": token_data['address'],
+        "net": token_data['net'] if 'net' in token_data else None,
+        "lang": token_data['lang'] if 'lang' in token_data else None,
+        "address": token_data['address'] if 'address' in token_data else None,
         }
     )
 

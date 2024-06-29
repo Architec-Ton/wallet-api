@@ -31,7 +31,7 @@ async def post_auth(init_data: AuthIn):
     if init_data.init_data_raw:
         payload["name"] = init_data.init_data_raw.user.username
         payload["lang"] = init_data.init_data_raw.user.language_code
-        payload["sub"] = init_data.init_data_raw.user.id
+        payload["sub"] = str(init_data.init_data_raw.user.id)
 
     access_token = create_token(payload)
     # s = telegram_validate(init_data)
