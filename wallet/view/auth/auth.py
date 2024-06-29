@@ -9,7 +9,7 @@ from uuid import UUID
 class InitDataIn(ArchitectonBase):
     auth_date: str
     hash: str
-    query_id: str
+    query_id: str | None
     user: UserIn
 
 
