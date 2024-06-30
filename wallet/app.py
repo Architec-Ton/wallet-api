@@ -2,6 +2,10 @@ from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 import logging
+
+from tortoise.contrib.fastapi import register_tortoise
+
+from wallet.config import TORTOISE_ORM
 from wallet.errors import APIException
 from wallet.routes import router
 
@@ -49,3 +53,7 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 
 
 app.include_router(router, prefix=app_base)
+
+register_tortoise(
+    app, generate_schemas=True, add_exception_handlers=True, config=TORTOISE_ORM
+)

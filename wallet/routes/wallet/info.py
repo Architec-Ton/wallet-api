@@ -7,6 +7,7 @@ from tonsdk.utils import Address
 
 from wallet.auth import get_user
 from wallet.controllers.ton_controller import TonController
+from wallet.controllers.wallet_controller import WalletController
 from wallet.view.auth.user import UserOut
 from wallet.view.wallet.info import InfoOut
 
@@ -82,9 +83,25 @@ async def get_wallet_info(
     for t in transactions:
         logging.info(f"transactions: {t.to_dict()}")
 
+    jetton = await WalletController().get_jetton(
+        Address("EQBTaitfymnhdz6fMQaN5LvvpETOE6Mn-A9rcCSSJpZ-PD2T"),
+        Address(user.address),
+    )
+
+    logging.info(f"get_jetton_balance: {jetton}")
+
+    jetton_data = await TonController().get_jetton_data(
+        Address("EQDnRHbK5vJBLQyAnS6V8XNoRerCebnn9A2FlVlHtFVLFGZ-")
+    )
+
+    logging.info(f"jetton_data: {jetton_data}")
+
     mock[0]["address"] = user.address
     mock[0]["assets"][0]["amount"] = balance
     mock[0]["assets"][0]["usd_price"] = balance * 7.02323
+
+    # mock[0]["assets"][2]["amount"] = wallet.balance / (10**9)
+    # mock[0]["assets"][2]["usd_price"] = wallet.balance / (10**9) * 7.02323 * 1.5
 
     mock[0]["usd_price"] = mock[0]["assets"][0]["usd_price"]
     return {"current_wallet": 0, "wallets": mock}
