@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "*"
+pydantic = ">=2.7.4"
+unicorn = "*"
+tortoise-orm = {version = "*", extras = ["asyncpg"]}
+faker = "*"
+python-jose = {version = "*", extras = ["cryptography"]}
+tontools = "*"
+bitarray = ">=2.9.2"
+
+[dev-packages]
+flake8 = "*"
+isort = "*"
+black = "*"
+
+[requires]
+python_version = "3.12"
