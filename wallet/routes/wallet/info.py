@@ -76,8 +76,10 @@ async def get_wallet_info(
     logging.info(user)
 
     balance = await TonController().get_balance(Address(user.address))
+    logging.info(balance)
 
     transactions = await TonController().get_transactions(Address(user.address))
+    logging.ingo(transactions)
 
     logging.info(f"Balance: {balance}")
     for t in transactions:

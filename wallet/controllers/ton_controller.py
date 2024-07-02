@@ -1,4 +1,4 @@
-from TonTools import TonCenterClient, LsClient, TonApiClient
+from TonTools.Providers.TonCenterClient import GetMethodError
 from tonsdk.utils import Address
 
 from .ton.ton_client import TonClient
@@ -27,7 +27,7 @@ class TonController:
         try:
             jetton_wallet = await self.ton_client.tc_client.get_jetton_wallet(address.to_string())
             return jetton_wallet
-        except TonCenterClient.GetMethodError as e:
+        except GetMethodError as e:
             logging.error(f"Error getting jetton wallet data for address {address=}: {e=}")
             return None
         except Exception as e:
