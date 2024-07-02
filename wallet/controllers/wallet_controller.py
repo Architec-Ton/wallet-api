@@ -18,4 +18,4 @@ class WalletController:
         jetton_wallet = await self.ton.get_jetton_wallet(Address(jetton_wallet_address))
         return jetton_wallet
 
-        "EQBTaitfymnhdz6fMQaN5LvvpETOE6Mn-A9rcCSSJpZ-PD2T"
+        #  "EQBTaitfymnhdz6fMQaN5LvvpETOE6Mn-A9rcCSSJpZ-PD2T"

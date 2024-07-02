@@ -84,14 +84,14 @@ async def get_wallet_info(
         logging.info(f"transactions: {t.to_dict()}")
 
     jetton = await WalletController().get_jetton(
-        Address("EQBTaitfymnhdz6fMQaN5LvvpETOE6Mn-A9rcCSSJpZ-PD2T"),
-        Address(user.address),
+        jetton_master_address=Address("EQBTaitfymnhdz6fMQaN5LvvpETOE6Mn-A9rcCSSJpZ-PD2T"),
+        owner_address=Address(user.address),
     )
 
-    logging.info(f"get_jetton_balance: {jetton}")
+    logging.info(f"get_jetton_balance: {jetton=}")
 
     jetton_data = await TonController().get_jetton_data(
-        Address("EQDnRHbK5vJBLQyAnS6V8XNoRerCebnn9A2FlVlHtFVLFGZ-")
+        master_address=Address("EQDnRHbK5vJBLQyAnS6V8XNoRerCebnn9A2FlVlHtFVLFGZ-")
     )
 
     logging.info(f"jetton_data: {jetton_data}")
