@@ -21,12 +21,8 @@ router = APIRouter()
 
 async def create_jetton_master(address: str):
     jetton, _ = await JettonMaster.get_or_create(address_base64=address)
-
-    a = Address(address)
-
-    jetton.address_raw = a.to_string(is_user_friendly=False, is_test_only=False)
-    jetton.address_hash = a.hash_part.hex()
-    jetton.mainnet = False
+    jetton.address = address
+    jetton.mainnet = False  # Dev only for testnet
     await jetton.save()
     return jetton
 
@@ -34,7 +30,8 @@ async def create_jetton_master(address: str):
 @router.post("/import")
 async def post_imposrt_jettons():
     jettons = [
-        "EQBTaitfymnhdz6fMQaN5LvvpETOE6Mn-A9rcCSSJpZ-PD2T",
+        "EQDe8inmr83aON1yfd3brqFfH3sE8Gp6q3M17KosAASuTBZi",
+        "EQDCCWyxCH7IbdIflaNgVgYgWERlgCM-8WjALDomI2KRuWG2",
         "EQDnRHbK5vJBLQyAnS6V8XNoRerCebnn9A2FlVlHtFVLFGZ-",
     ]
     out = []

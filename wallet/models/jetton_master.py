@@ -22,8 +22,7 @@ class JettonMaster(BaseTonAddress):
     token_supply = fields.DecimalField(
         max_digits=39, decimal_places=9, null=True, default=None
     )
-    mainnet = fields.BooleanField(default=True, index=True)
-    network: str = fields.CharField(max_length=16, null=True, default="ton")
+    primary = fields.BooleanField(default=True, index=True)
 
     created_at = fields.DatetimeField(auto_now_add=True)
     modified_at = fields.DatetimeField(auto_now=True)

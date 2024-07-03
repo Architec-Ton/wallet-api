@@ -1,8 +1,10 @@
 from enum import Enum
 from typing import Union, List
 
+from tonsdk.utils import Address
+
 from ..base import ArchitectonBase, BaseModel
-from pydantic import Field
+from pydantic import Field, field_validator
 from uuid import UUID
 
 
@@ -14,10 +16,16 @@ class NftMetaOut(ArchitectonBase):
     image_data: str | None = Field(default=None)
     uri: str | None = Field(default=None)
 
+    @field_validator("address", mode="before")
+    @classmethod
+    def validate_address(cls, value):
+        if isinstance(value, Address):
+            return value.to_string(is_user_friendly=True)
+
 
 class JettonMetaOut(NftMetaOut):
-    symbol: str | None= Field(default=None)
-    decimals: int | None= Field(default=None)
+    symbol: str | None = Field(default=None)
+    decimals: int | None = Field(default=None)
     amount_style: str | None = Field(default=None)
     render_type: str | None = Field(default=None)
 
