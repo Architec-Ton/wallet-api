@@ -2,6 +2,7 @@ from typing import List, Dict
 
 from uuid import UUID
 
+from .marketing import AppMarketingOut
 from ..base import ArchitectonBase
 from pydantic import Field, field_validator
 
@@ -81,3 +82,8 @@ class AppsByCategoriesOut(CategoryOut):
 
 class AppsCategoriesOut(CategoryOut):
     apps: List[AppShortOut]
+
+
+class AppsOut(ArchitectonBase):
+    marketings: List[AppMarketingOut]
+    categories: List[AppsCategoriesOut]
