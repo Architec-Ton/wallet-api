@@ -44,18 +44,24 @@ class AppUpdateIn(AppCreateIn):
     url: str | None = Field(default=None)
 
 
-class AppOut(AppTextIn):
+class AppShortOut(ArchitectonBase):
     id: UUID = Field()
-    category_id: UUID | None = Field(default=None)
-    url: str = Field()
+    title: str = Field()
+    subtitle: str = Field()
     icon: str | None = Field(default=None)
-    gallery: List[str] = Field(default=[])
 
     @field_validator("icon", mode="before")
     @classmethod
     def validate_icon(cls, value):
         if isinstance(value, Attachment):
             return value.url
+
+
+class AppOut(AppTextIn, AppShortOut):
+    id: UUID = Field()
+    category_id: UUID | None = Field(default=None)
+    url: str = Field()
+    gallery: List[str] = Field(default=[])
 
     @field_validator("gallery", mode="before")
     @classmethod
@@ -70,3 +76,7 @@ class AppDetailOut(AppOut):
 
 class AppsByCategoriesOut(CategoryOut):
     apps: List[AppOut]
+
+
+class AppsCategoriesOut(CategoryOut):
+    apps: List[AppShortOut]

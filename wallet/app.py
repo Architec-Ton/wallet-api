@@ -4,6 +4,7 @@ from starlette.responses import JSONResponse
 import logging
 import time
 
+from starlette.staticfiles import StaticFiles
 from tortoise.contrib.fastapi import register_tortoise
 
 from wallet.config import TORTOISE_ORM
@@ -59,3 +60,5 @@ app.include_router(router, prefix=app_base)
 register_tortoise(
     app, generate_schemas=True, add_exception_handlers=True, config=TORTOISE_ORM
 )
+
+app.mount("/storage", StaticFiles(directory="./storage"), name="storage")
