@@ -16,6 +16,7 @@ class AppMarketingCreateIn(ArchitectonBase):
 class AppMarketingOut(ArchitectonBase):
     id: UUID = Field()
     title: str = Field()
+    url: str = Field()
     image: str | None = Field(default=None)
 
     @field_validator("image", mode="before")
