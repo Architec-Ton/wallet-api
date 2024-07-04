@@ -5,8 +5,8 @@ from typing import List
 from faker import Faker
 
 from wallet.auth import get_user
-from wallet.models import AppCategory
-from wallet.view.app.app import AppsCategoriesOut
+from wallet.models import AppCategory, App
+from wallet.view.app.app import AppsCategoriesOut, AppDetailOut
 from wallet.view.auth.user import UserOut
 
 fake = Faker()
@@ -29,3 +29,9 @@ async def get_apps(
         await AppCategory.all().order_by("order").prefetch_related("apps", "apps__icon")
     )
     return categories_with_apps
+
+
+@router.get("/{app_id}", response_model=AppDetailOut)
+async def get_app(app_id: uuid.UUID):
+    app = await App.get(id=app_id).prefetch_related("icon", "attachments")
+    return app

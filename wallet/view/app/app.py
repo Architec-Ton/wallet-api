@@ -72,6 +72,7 @@ class AppOut(AppTextIn, AppShortOut):
 
 class AppDetailOut(AppOut):
     slug: str = Field()
+    resources: List = Field(default=[])
 
 
 class AppsByCategoriesOut(CategoryOut):
