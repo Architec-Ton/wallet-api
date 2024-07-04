@@ -1,0 +1,72 @@
+from typing import List, Dict
+
+from uuid import UUID
+
+from ..base import ArchitectonBase
+from pydantic import Field, field_validator
+
+from ..category.category import CategoryOut
+from ...models import Attachment
+
+
+class AppTextIn(ArchitectonBase):
+    title: str = Field()
+    subtitle: str = Field()
+    description: str = Field()
+
+
+class AppCreateIn(ArchitectonBase):
+    category_id: UUID | None = Field(default=None)
+    url: str = Field(example="https://t.me/satochi_bot/game")
+    title_en: str = Field()
+    subtitle_en: str = Field()
+    description_en: str = Field()
+    translation: Dict[str, AppTextIn] | None = Field(
+        default=None,
+        example={
+            "ru": {
+                "title": "Название игры ",
+                "subtitle": "Подзаголовок игры",
+                "description": "Длинное описание игры и игрового процесса ",
+            }
+        },
+    )
+
+    icon_id: UUID | None = Field(default=None, example=None)
+
+    attachments_ids: List[UUID] = Field(default=[], example=[])
+
+
+class AppUpdateIn(AppCreateIn):
+    title_en: str | None = Field(default=None)
+    subtitle_en: str | None = Field(default=None)
+    description_en: str | None = Field(default=None)
+    url: str | None = Field(default=None)
+
+
+class AppOut(AppTextIn):
+    id: UUID = Field()
+    category_id: UUID | None = Field(default=None)
+    url: str = Field()
+    icon: str | None = Field(default=None)
+    gallery: List[str] = Field(default=[])
+
+    @field_validator("icon", mode="before")
+    @classmethod
+    def validate_icon(cls, value):
+        if isinstance(value, Attachment):
+            return value.url
+
+    @field_validator("gallery", mode="before")
+    @classmethod
+    def validate_gallery(cls, value):
+        if isinstance(value, List):
+            return [o for o in value]
+
+
+class AppDetailOut(AppOut):
+    slug: str = Field()
+
+
+class AppsByCategoriesOut(CategoryOut):
+    apps: List[AppOut]

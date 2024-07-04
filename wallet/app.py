@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 import logging
+import time
 
 from tortoise.contrib.fastapi import register_tortoise
 
@@ -16,6 +17,7 @@ logging.basicConfig(
 )
 
 app_base = "/api/v2/wallet"
+
 
 app = FastAPI(
     title=f"Architec.TON API",

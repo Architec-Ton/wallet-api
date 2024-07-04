@@ -66,8 +66,8 @@ class WalletController:
                 wallets[aw_idx].active = True
                 wallets[aw_idx].balance = aw.balance
                 if wallets[aw_idx].jetton.name == "BNK jetton":
-                    wallets[aw_idx].usd_ratio = 1.5 * 7.87
-                    wallets[aw_idx].change_ratio = 0.0001
+                    wallets[aw_idx].usd_ratio = 0
+                    wallets[aw_idx].change_ratio = 0
                 wallets[aw_idx].wallet_code = aw.jetton_wallet_code
                 await wallets[aw_idx].save()
             elif aw is None and wallets[aw_idx].active:
