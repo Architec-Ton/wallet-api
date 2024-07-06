@@ -12,7 +12,7 @@ class JettonMaster(BaseTonAddress):
     name: str = fields.CharField(max_length=256, null=True, default=None)
     description: str = fields.CharField(max_length=1028, null=True, default=None)
     image: str = fields.CharField(max_length=1028, null=True, default=None)
-    image_data: str = fields.CharField(max_length=1028, null=True, default=None)
+    image_data: str = fields.CharField(max_length=2048, null=True, default=None)
     url: str = fields.CharField(max_length=1028, null=True, default=None)
     symbol = fields.CharField(max_length=12, null=True, index=True)
     decimals = fields.IntField(default=9)

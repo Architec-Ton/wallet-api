@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from typing import List
+from typing import List, Optional
 
 from TonTools import TonCenterClient, LsClient, TonApiClient
 from tonsdk.utils import Address
@@ -26,13 +26,17 @@ class WalletController:
 
         #  "EQBTaitfymnhdz6fMQaN5LvvpETOE6Mn-A9rcCSSJpZ-PD2T"
 
-    async def get_wallets(self, owner_address: Address) -> List[JettonWallet]:
+    async def get_wallets(
+        self, owner_address: Address, include_symbols=None
+    ) -> List[JettonWallet]:
         jettons, owner_wallets = await asyncio.gather(
-            JettonMaster.all(), JettonWallet.get_wallets(owner_address)
+            (
+                JettonMaster.all()
+                if include_symbols is None
+                else JettonMaster.filter(symbol__in=include_symbols)
+            ),
+            JettonWallet.get_wallets(owner_address, include_symbols),
         )
-
-        logging.info(len(jettons))
-        logging.info(len(owner_wallets))
 
         if len(jettons) != len(owner_wallets):
             for w in owner_wallets:
@@ -51,11 +55,19 @@ class WalletController:
         # jetton_wallet = await self.ton.get_jetton_wallet(Address(jetton_wallet_address))
         return owner_wallets
 
-    async def get_assets(self, owner_address: Address) -> List[CoinOut]:
-
-        balance, wallets = await asyncio.gather(
-            TonController().get_balance(owner_address), self.get_wallets(owner_address)
-        )
+    async def get_assets(
+        self,
+        owner_address: Address,
+        only_active=True,
+        include_symbols: Optional[List[str]] = None,
+    ) -> List[CoinOut]:
+        if include_symbols is None or "TON" in include_symbols:
+            balance, wallets = await asyncio.gather(
+                TonController().get_balance(owner_address),
+                self.get_wallets(owner_address, include_symbols=include_symbols),
+            )
+        else:
+            wallets = await self.get_wallets(owner_address, include_symbols)
 
         assets_tsk = [self.ton.get_jetton_wallet(w.wallet_address) for w in wallets]
 
@@ -73,22 +85,25 @@ class WalletController:
             elif aw is None and wallets[aw_idx].active:
                 wallets[aw_idx].active = False
                 await wallets[aw_idx].save(update_fields="active")
+        if only_active:
+            coins = [CoinOut.model_validate(w) for w in wallets if w.active]
+        else:
+            coins = [CoinOut.model_validate(w) for w in wallets]
 
-        coins = [CoinOut.model_validate(w) for w in wallets if w.active]
-
-        ton_asset = CoinOut(
-            type="ton",
-            amount=balance,
-            usd_price=balance * 7.44,
-            change_price=0,
-            meta={
-                "name": "TON",
-                "symbol": "TON",
-                "decimals": "9",
-                "image": "/wallet/images/symbols/ton.svg",
-                "description": "TON ",
-            },
-        )
-        coins.insert(0, ton_asset)
+        if include_symbols is None or "TON" in include_symbols:
+            ton_asset = CoinOut(
+                type="ton",
+                amount=balance,
+                usd_price=balance * 7.44,
+                change_price=0,
+                meta={
+                    "name": "TON",
+                    "symbol": "TON",
+                    "decimals": "9",
+                    "image": "/wallet/images/symbols/ton.svg",
+                    "description": "TON ",
+                },
+            )
+            coins.insert(0, ton_asset)
 
         return coins

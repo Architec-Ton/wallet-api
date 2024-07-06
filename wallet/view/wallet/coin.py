@@ -39,9 +39,9 @@ class CoinType(str, Enum):
 class CoinOut(ArchitectonBase):
     type: CoinType = Field(default=CoinType.jetton)
     meta: JettonMetaOut | None = Field(default=None)
-    amount: float | None = Field(default=None)
-    usd_price: float | None = Field(default=None)
-    change_price: float | None = Field(default=None)
+    amount: float | None = Field(default=0)
+    usd_price: float | None = Field(default=0)
+    change_price: float | None = Field(default=0)
 
 
 class UserOut(ArchitectonBase):

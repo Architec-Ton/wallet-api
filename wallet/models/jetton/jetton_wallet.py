@@ -1,5 +1,6 @@
 from tonsdk.utils import Address
 from tortoise import fields
+from tortoise.expressions import Q
 
 from wallet.models import JettonMaster
 from wallet.models.base_address_model import BaseTonAddress
@@ -29,7 +30,7 @@ class JettonWallet(BaseTonAddress):
         max_digits=49, decimal_places=9, null=True, default=None, index=True
     )
     decimals = fields.IntField(default=None, index=True, null=True)
-
+    symbol = fields.CharField(max_length=12, null=True, index=True)
     usd_ratio = fields.FloatField(default=0)
 
     change_ratio = fields.FloatField(default=0)
@@ -62,14 +63,18 @@ class JettonWallet(BaseTonAddress):
             jetton=jetton,
             decimals=jetton.decimals,
             mainnet=mainnet,
+            symbol=jetton.symbol,
         )
 
     @staticmethod
-    async def get_wallets(owner_address: Address):
-        return await JettonWallet.filter(
+    async def get_wallets(owner_address: Address, include_symbols=None):
+        request = Q(
             address_hash=owner_address.hash_part.hex(),
             mainnet=not owner_address.is_test_only,
-        ).prefetch_related("jetton")
+        )
+        if include_symbols is not None:
+            request = Q(request, symbol__in=include_symbols)
+        return await JettonWallet.filter(request).prefetch_related("jetton")
 
     @property
     def wallet_address(self) -> Address:
@@ -90,7 +95,11 @@ class JettonWallet(BaseTonAddress):
 
     @property
     def usd_price(self):
-        return self.balance * self.usd_ratio
+        return (
+            float(self.balance) * float(self.usd_ratio)
+            if self.balance is not None and self.usd_ratio is not None
+            else 0
+        )
 
     @property
     def change_price(self):

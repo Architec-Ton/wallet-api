@@ -27,11 +27,15 @@ async def create_jetton_master(address: str):
     return jetton
 
 
+# EQBkmVvLkyZYouoNFnhf4622BoPoMw2mmEwyFIgxWviQuqke
+
+
+# kQBmyiov17J71ontt2u1F_dwKTfcUoghCMVyfIsDRM9NNvhp CSv3
 @router.post("/import")
 async def post_imposrt_jettons():
     jettons = [
-        "EQDe8inmr83aON1yfd3brqFfH3sE8Gp6q3M17KosAASuTBZi",
-        "EQDCCWyxCH7IbdIflaNgVgYgWERlgCM-8WjALDomI2KRuWG2",
+        "kQDDm3AwW9NAP2sv3ZjKPje9hY5zEiM68GxoUVtMX616n6Cm",  # BNK
+        "kQA-NCq-ifSX0ytcNNB7mla5eLyLntZieRuRcJC-npnWWGFq",  # ARC
         "EQDnRHbK5vJBLQyAnS6V8XNoRerCebnn9A2FlVlHtFVLFGZ-",
     ]
     out = []
@@ -52,6 +56,6 @@ async def post_imposrt_jettons():
 
             out.append(jetton_data.to_dict())
         except BaseException as e:
-            logging.error(e)
+            logging.exception(e)
 
     return out
