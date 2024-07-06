@@ -72,11 +72,11 @@ class WalletController:
         assets_tsk = [self.ton.get_jetton_wallet(w.wallet_address) for w in wallets]
 
         assets_wallets = await asyncio.gather(*assets_tsk)
-
         for aw_idx, aw in enumerate(assets_wallets):
             if aw is not None:
+                logging.info(aw)
                 wallets[aw_idx].active = True
-                wallets[aw_idx].balance = aw.balance
+                wallets[aw_idx].balance = aw.balance / (10 ** wallets[aw_idx].decimals)
                 if wallets[aw_idx].jetton.name == "BNK jetton":
                     wallets[aw_idx].usd_ratio = 0
                     wallets[aw_idx].change_ratio = 0
