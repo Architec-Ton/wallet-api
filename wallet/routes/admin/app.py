@@ -103,12 +103,12 @@ async def get_apps_by_cat():
     return categories_with_apps
 
 
-@router.get("/{app_id/resources", response_model=List[AppResourceOut])
+@router.get("/{app_id}/resources", response_model=List[AppResourceOut])
 async def get_app_resurces(app_id: UUID):
     return await AppResource.filter(app_id=app_id).prefetch_related("icon")
 
 
-@router.post("/{app_id/resource", response_model=AppResourceOut)
+@router.post("/{app_id}/resource", response_model=AppResourceOut)
 async def post_create_resource(app_id: UUID, app_resource_in: AppResourceCreateIn):
     app = await App.get(id=app_id)
     app_data = jsonable_encoder(
@@ -126,7 +126,7 @@ async def post_create_resource(app_id: UUID, app_resource_in: AppResourceCreateI
     return app_resource
 
 
-@router.put("/{app_id/resource/resource_id", response_model=AppResourceOut)
+@router.put("/{app_id}/resource/resource_id", response_model=AppResourceOut)
 async def put_update_resource(
     app_id: UUID, resource_id: UUID, app_resource_in: AppResourceUpdateIn
 ):
@@ -140,7 +140,7 @@ async def put_update_resource(
     return app_resource
 
 
-@router.delete("/{app_id/resource/resource_id")
+@router.delete("/{app_id}/resource/resource_id")
 async def delete_app_category(app_id: UUID, resource_id: UUID):
     app = await AppResource.get(app_id=app_id, id=resource_id)
     await app.delete()
