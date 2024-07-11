@@ -73,7 +73,16 @@ async def delete_app_category(app_id: UUID):
 
 @router.get("s", response_model=List[AppDetailOut])
 async def get_apps():
-    return await App.all().order_by("order").prefetch_related("icon", "attachments")
+    return (
+        await App.all()
+        .order_by("order")
+        .prefetch_related(
+            "icon",
+            "attachments",
+            "resources",
+            "resources__icon",
+        )
+    )
 
 
 @router.get("s/preview", response_model=List[AppsByCategoriesOut])
