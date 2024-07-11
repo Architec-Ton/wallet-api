@@ -104,11 +104,11 @@ class Attachment(Model):
                 attachment_id=self.id, entity_id=entity_id
             ).delete()
         count = await AttachmentConnection.filter(attachment_id=self.id).count()
-        if count == 0:
-            for file in AttachmentFileType:
-                filepath = self.filepath(file, is_exist=True)
-                if filepath is not None:
-                    os.remove(filepath)
-            await self.delete()
-            return True
+        # if count == 0:
+        #     for file in AttachmentFileType:
+        #         filepath = self.filepath(file, is_exist=True)
+        #         if filepath is not None:
+        #             os.remove(filepath)
+        #     await self.delete()
+        #     return True
         return False

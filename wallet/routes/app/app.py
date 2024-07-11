@@ -35,5 +35,7 @@ async def get_apps(
 
 @router.get("/{app_id}", response_model=AppDetailOut)
 async def get_app(app_id: uuid.UUID):
-    app = await App.get(id=app_id).prefetch_related("icon", "attachments")
+    app = await App.get(id=app_id).prefetch_related(
+        "icon", "attachments", "resources", "resources__icon"
+    )
     return app

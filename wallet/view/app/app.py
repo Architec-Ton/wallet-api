@@ -1,8 +1,10 @@
+from enum import Enum
 from typing import List, Dict
 
 from uuid import UUID
 
 from .marketing import AppMarketingOut
+from .resource import AppResourceOut
 from ..base import ArchitectonBase
 from pydantic import Field, field_validator
 
@@ -63,6 +65,7 @@ class AppOut(AppTextIn, AppShortOut):
     category_id: UUID | None = Field(default=None)
     url: str = Field()
     gallery: List[str] = Field(default=[])
+    resources: List[AppResourceOut] = Field(default=[])
 
     @field_validator("gallery", mode="before")
     @classmethod
@@ -73,7 +76,7 @@ class AppOut(AppTextIn, AppShortOut):
 
 class AppDetailOut(AppOut):
     slug: str = Field()
-    resources: List = Field(default=[])
+    resources: List[AppResourceOut] = Field(default=[])
 
 
 class AppsByCategoriesOut(CategoryOut):

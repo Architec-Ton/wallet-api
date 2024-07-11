@@ -27,15 +27,11 @@ async def create_jetton_master(address: str):
     return jetton
 
 
-# EQBkmVvLkyZYouoNFnhf4622BoPoMw2mmEwyFIgxWviQuqke
-
-
-# kQBmyiov17J71ontt2u1F_dwKTfcUoghCMVyfIsDRM9NNvhp CSv3
 @router.post("/import")
 async def post_imposrt_jettons():
     jettons = [
-        "kQDDm3AwW9NAP2sv3ZjKPje9hY5zEiM68GxoUVtMX616n6Cm",  # BNK
-        "kQA-NCq-ifSX0ytcNNB7mla5eLyLntZieRuRcJC-npnWWGFq",  # ARC
+        "kQCkaGQTCUMUzu5b9IDYY4EjGI4hLIrnnKa5oAhgymxp9pES",  # BNK
+        "kQCidZd9oBoqDtTSp91BCTMvcpwGJkut7qdtOZKZXlVnBDb7",  # ARC
         "EQDnRHbK5vJBLQyAnS6V8XNoRerCebnn9A2FlVlHtFVLFGZ-",
     ]
     out = []
