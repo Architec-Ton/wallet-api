@@ -1,4 +1,3 @@
-import logging
 from typing import List
 from uuid import UUID
 
@@ -13,7 +12,6 @@ from wallet.view.app.app import (
     AppsByCategoriesOut,
 )
 
-from wallet.errors import APIException
 
 from fastapi import APIRouter
 
@@ -45,7 +43,7 @@ async def post_create_app(app_in: AppCreateIn):
     )
     app = await App.create(**app_data)
     await app.update_attachments(app_in.attachments_ids)
-    await app.fetch_related("icon", "attachments")
+    await app.fetch_related("icon", "attachments", "resources", "resources_icon")
     return app
 
 
@@ -60,7 +58,7 @@ async def post_update_app_category(app_id: UUID, app_in: AppUpdateIn):
     await app.verify_attachments(app_in.attachments_ids)
     await app.update_from_dict(app_data).save()
     await app.update_attachments(app_in.attachments_ids)
-    await app.fetch_related("icon", "attachments")
+    await app.fetch_related("icon", "attachments", "resources", "resources_icon")
     return app
 
 
@@ -104,7 +102,7 @@ async def get_apps_by_cat():
 
 
 @router.get("/{app_id}/resources", response_model=List[AppResourceOut])
-async def get_app_resurces(app_id: UUID):
+async def get_app_resources(app_id: UUID):
     return await AppResource.filter(app_id=app_id).prefetch_related("icon")
 
 
@@ -141,7 +139,7 @@ async def put_update_resource(
 
 
 @router.delete("/{app_id}/resource/{resource_id}")
-async def delete_app_category(app_id: UUID, resource_id: UUID):
+async def delete_app_resource(app_id: UUID, resource_id: UUID):
     app = await AppResource.get(app_id=app_id, id=resource_id)
     await app.delete()
     return {"status": "deleted", "total": 1}
