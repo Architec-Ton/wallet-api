@@ -25,11 +25,21 @@ async def get_apps(
     categoryId: str | None = Query(default=None),
     # user: UserOut = Depends(get_user),
 ):
-    # logging.info(f"u2: {user}")
-    categories_with_apps, marketings = await asyncio.gather(
-        AppCategory.all().order_by("order").prefetch_related("apps", "apps__icon"),
-        AppMarketing.all().order_by("order").prefetch_related("image"),
-    )
+    if categoryId is None and search is None:
+        # logging.info(f"u2: {user}")
+        categories_with_apps, marketings = await asyncio.gather(
+            AppCategory.all().order_by("order").prefetch_related("apps", "apps__icon"),
+            AppMarketing.all().order_by("order").prefetch_related("image"),
+        )
+    else:
+        marketings = []
+        categories_with_apps = (
+            await AppCategory.filter(id=categoryId)
+            .order_by("order")
+            .prefetch_related("apps", "apps__icon")
+        )
+        logging.info(categories_with_apps)
+
     return AppsOut(categories=categories_with_apps, marketings=marketings)
 
 
