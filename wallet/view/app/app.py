@@ -90,3 +90,8 @@ class AppsCategoriesOut(CategoryOut):
 class AppsOut(ArchitectonBase):
     marketings: List[AppMarketingOut]
     categories: List[AppsCategoriesOut]
+
+
+class AppsFilterIn(ArchitectonBase):
+    search: str | None = Field(default=None)
+    category_id: UUID | None = Field(default=None)
