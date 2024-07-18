@@ -43,18 +43,18 @@ async def get_apps(
             .order_by("order")
             .prefetch_related("apps", "apps__icon")
         )
-        r = AppsOut(categories=categories_with_apps, marketings=marketings).model_dump()
-        if filter_in.search is not None:
-            s = filter_in.search.lower().strip()
-            for c in r["categories"]:
-                apps = []
-                for a in c["apps"]:
-                    if s in a["title"].lower():
-                        apps.append(a)
-                c["apps"] = apps
+        # r = AppsOut(categories=categories_with_apps, marketings=marketings).model_dump()
+        # if filter_in.search is not None:
+        #     s = filter_in.search.lower().strip()
+        #     for c in r["categories"]:
+        #         apps = []
+        #         for a in c["apps"]:
+        #             if s in a["title"].lower():
+        #                 apps.append(a)
+        #         c["apps"] = apps
         # await categories_with_apps.fetch_related("apps", "apps__icon")
         # logging.info(categories_with_apps)
-        return r
+        # return r
 
     return AppsOut(categories=categories_with_apps, marketings=marketings)
 
