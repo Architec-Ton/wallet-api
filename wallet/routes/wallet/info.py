@@ -71,13 +71,13 @@ mock = [
 
 @router.get("", response_model=InfoOut)
 async def get_wallet_info(
-    # user: UserOut = Depends(get_user),
+    user: UserOut = Depends(get_user),
 ):
     # logging.info(user)
 
-    # address = Address(user.address)
+    address = Address(user.address)
 
-    address = Address("0QCto-hxbOIBe_G6ub3s3_murlWrPBo__j8zI4Fka8PAMGBK")
+    # address = Address("0QCto-hxbOIBe_G6ub3s3_murlWrPBo__j8zI4Fka8PAMGBK")
 
     assets = await WalletController().get_assets(address)
     txs = await TonController().get_transactions(address)

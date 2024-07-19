@@ -23,10 +23,10 @@ router = APIRouter()
 @router.get("s", response_model=AppsOut)
 async def get_apps(
     filter_in: AppsFilterIn = Depends(AppsFilterIn),
-    # user: UserOut = Depends(get_user),
+    user: UserOut = Depends(get_user),
 ):
     if filter_in.search is None and filter_in.category_id is None:
-        # logging.info(f"u2: {user}")
+        logging.info(f"u2: {user}")
         categories_with_apps, marketings = await asyncio.gather(
             AppCategory.all().order_by("order").prefetch_related("apps", "apps__icon"),
             AppMarketing.all().order_by("order").prefetch_related("image"),
