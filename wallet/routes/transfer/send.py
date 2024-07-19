@@ -13,6 +13,7 @@ from wallet.controllers.wallet_controller import WalletController
 from wallet.view.auth.user import UserOut
 from wallet.view.bank.BankBuyInfo import BankBuyInfo
 from wallet.view.game.game import GameOut
+from wallet.view.transaction.history import HistoryItemOut
 
 fake = Faker()
 
@@ -21,7 +22,7 @@ from fastapi import APIRouter, Depends, Query
 router = APIRouter()
 
 
-@router.get("")  # , response_model=BankBuyInfo)
+@router.get("", response_model=List[HistoryItemOut])
 async def get_send_info(
     send: str = Query(),
     recv: str = Query(),
@@ -43,12 +44,14 @@ async def get_send_info(
 
     txs = await TonController().get_transactions(owner_address)
 
-    async with aiohttp.ClientSession() as session:
-        url = "https://testnet.toncenter.com/api/v2/" + "getTransactions"
-        transactions = []
-        params = {"address": owner_address.to_string(), "limit": 10, "archival": 1}
-        response = await session.get(url=url, params=params)
+    # return [t.to_dict() for t in txs]
 
-        return await response.json()
+    # async with aiohttp.ClientSession() as session:
+    #     url = "https://testnet.toncenter.com/api/v2/" + "getTransactions"
+    #     transactions = []
+    #     params = {"address": owner_address.to_string(), "limit": 10, "archival": 1}
+    #     response = await session.get(url=url, params=params)
+    #
+    #     return await response.json()
 
     return txs
