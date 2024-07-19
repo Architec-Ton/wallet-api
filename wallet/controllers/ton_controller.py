@@ -1,3 +1,4 @@
+import aiohttp
 from TonTools.Providers.TonCenterClient import GetMethodError
 from tonsdk.utils import Address
 
@@ -52,6 +53,9 @@ class TonController:
 
     async def get_transactions(self, address: Address, limit: int = 3):
         transactions = await self.ton_client.tc_client.get_transactions(
-            address.to_string(), limit
+            address.to_string(is_user_friendly=True), limit
         )
-        return transactions
+
+        trx = [t.to_dict_user_friendly() for t in transactions]
+
+        return trx
