@@ -12,6 +12,10 @@ faker = "*"
 python-jose = {version = "*", extras = ["cryptography"]}
 tontools = "*"
 bitarray = ">=2.9.2"
+python-slugify = "*"
+orjson = "*"
+pillow = "*"
+aiofiles = "*"
 
 [dev-packages]
 flake8 = "*"

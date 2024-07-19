@@ -2,7 +2,9 @@ from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 import logging
+import time
 
+from starlette.staticfiles import StaticFiles
 from tortoise.contrib.fastapi import register_tortoise
 
 from wallet.config import TORTOISE_ORM
@@ -16,6 +18,7 @@ logging.basicConfig(
 )
 
 app_base = "/api/v2/wallet"
+
 
 app = FastAPI(
     title=f"Architec.TON API",
@@ -57,3 +60,5 @@ app.include_router(router, prefix=app_base)
 register_tortoise(
     app, generate_schemas=True, add_exception_handlers=True, config=TORTOISE_ORM
 )
+
+app.mount("/storage", StaticFiles(directory="./storage"), name="storage")

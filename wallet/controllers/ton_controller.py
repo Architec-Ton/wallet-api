@@ -1,20 +1,25 @@
-from TonTools import TonCenterClient, LsClient, TonApiClient
+import aiohttp
+from TonTools.Providers.TonCenterClient import GetMethodError
 from tonsdk.utils import Address
 
 from .ton.ton_client import TonClient
+
+import logging
 
 client = TonClient()
 
 
 class TonController:
-
     def __init__(self):
         self.ton_client = client
 
     async def get_balance(self, address: Address):
-        balance = await self.ton_client.tc_client.get_balance(address.to_string())
-        if balance is not None:
-            return balance / (10**9)
+        try:
+            balance = await self.ton_client.tc_client.get_balance(address.to_string())
+            if balance is not None:
+                return balance / (10**9)
+        except BaseException as error:
+            logging.exception(error)
 
     async def get_jetton_wallet_address(
         self, master_address: Address, address: Address
@@ -25,7 +30,21 @@ class TonController:
         return address
 
     async def get_jetton_wallet(self, address: Address):
-        return await self.ton_client.tc_client.get_jetton_wallet(address.to_string())
+        try:
+            jetton_wallet = await self.ton_client.tc_client.get_jetton_wallet(
+                address.to_string()
+            )
+            return jetton_wallet
+        except GetMethodError as e:
+            logging.error(
+                f"Error getting jetton wallet data for address {address=}: {e=}"
+            )
+            return None
+        except Exception as e:
+            logging.error(
+                f"Error getting jetton wallet data for address {address=}: {e=}"
+            )
+            return None
 
     async def get_jetton_data(self, master_address: Address):
         return await self.ton_client.tc_client.get_jetton_data(
@@ -34,6 +53,9 @@ class TonController:
 
     async def get_transactions(self, address: Address, limit: int = 3):
         transactions = await self.ton_client.tc_client.get_transactions(
-            address.to_string(), limit
+            address.to_string(is_user_friendly=True), limit
         )
-        return transactions
+
+        trx = [t.to_dict_user_friendly() for t in transactions]
+
+        return trx

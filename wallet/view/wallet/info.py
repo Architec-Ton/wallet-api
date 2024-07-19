@@ -6,13 +6,15 @@ from .coin import CoinOut
 from pydantic import Field
 from uuid import UUID
 
+from ..transaction.history import HistoryItemOut
+
 
 class WalletOut(ArchitectonBase):
     usd_price: float = Field(default=None)
     change_price: float = Field(default=None)
     address: str = Field(default=None)
     assets: List[CoinOut] = Field(default=[])
-    history: List[CoinOut] = Field(default=[])
+    history: List[HistoryItemOut] = Field(default=[])
 
 
 class InfoOut(ArchitectonBase):

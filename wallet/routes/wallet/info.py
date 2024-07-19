@@ -9,7 +9,7 @@ from wallet.auth import get_user
 from wallet.controllers.ton_controller import TonController
 from wallet.controllers.wallet_controller import WalletController
 from wallet.view.auth.user import UserOut
-from wallet.view.wallet.info import InfoOut
+from wallet.view.wallet.info import InfoOut, WalletOut
 
 fake = Faker()
 
@@ -71,37 +71,33 @@ mock = [
 
 @router.get("", response_model=InfoOut)
 async def get_wallet_info(
-    user: UserOut = Depends(get_user),
+    # user: UserOut = Depends(get_user),
 ):
-    logging.info(user)
+    # logging.info(user)
 
-    balance = await TonController().get_balance(Address(user.address))
+    # address = Address(user.address)
 
-    transactions = await TonController().get_transactions(Address(user.address))
+    address = Address("0QCto-hxbOIBe_G6ub3s3_murlWrPBo__j8zI4Fka8PAMGBK")
 
-    logging.info(f"Balance: {balance}")
-    for t in transactions:
-        logging.info(f"transactions: {t.to_dict()}")
+    assets = await WalletController().get_assets(address)
+    txs = await TonController().get_transactions(address)
 
-    jetton = await WalletController().get_jetton(
-        Address("EQBTaitfymnhdz6fMQaN5LvvpETOE6Mn-A9rcCSSJpZ-PD2T"),
-        Address(user.address),
+    # transactions = await TonController().get_transactions(Address(user.address))
+    # logging.info(transactions)
+    #
+    # logging.info(f"Balance: {balance}")
+    # for t in transactions:
+    #     logging.info(f"transactions: {t.to_dict()}")
+
+    usd_price = sum([a.usd_price for a in assets if a.usd_price is not None])
+    change_price = 0.01
+
+    wallet = WalletOut(
+        address=address.to_string(is_user_friendly=True),
+        usd_price=usd_price,
+        change_price=change_price,
+        assets=assets,
+        history=txs,
     )
 
-    logging.info(f"get_jetton_balance: {jetton}")
-
-    jetton_data = await TonController().get_jetton_data(
-        Address("EQDnRHbK5vJBLQyAnS6V8XNoRerCebnn9A2FlVlHtFVLFGZ-")
-    )
-
-    logging.info(f"jetton_data: {jetton_data}")
-
-    mock[0]["address"] = user.address
-    mock[0]["assets"][0]["amount"] = balance
-    mock[0]["assets"][0]["usd_price"] = balance * 7.02323
-
-    # mock[0]["assets"][2]["amount"] = wallet.balance / (10**9)
-    # mock[0]["assets"][2]["usd_price"] = wallet.balance / (10**9) * 7.02323 * 1.5
-
-    mock[0]["usd_price"] = mock[0]["assets"][0]["usd_price"]
-    return {"current_wallet": 0, "wallets": mock}
+    return {"current_wallet": 0, "wallets": [wallet]}

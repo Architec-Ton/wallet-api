@@ -12,7 +12,7 @@ class JettonMaster(BaseTonAddress):
     name: str = fields.CharField(max_length=256, null=True, default=None)
     description: str = fields.CharField(max_length=1028, null=True, default=None)
     image: str = fields.CharField(max_length=1028, null=True, default=None)
-    image_data: str = fields.CharField(max_length=1028, null=True, default=None)
+    image_data: str = fields.CharField(max_length=2048, null=True, default=None)
     url: str = fields.CharField(max_length=1028, null=True, default=None)
     symbol = fields.CharField(max_length=12, null=True, index=True)
     decimals = fields.IntField(default=9)
@@ -22,8 +22,7 @@ class JettonMaster(BaseTonAddress):
     token_supply = fields.DecimalField(
         max_digits=39, decimal_places=9, null=True, default=None
     )
-    mainnet = fields.BooleanField(default=True, index=True)
-    network: str = fields.CharField(max_length=16, null=True, default="ton")
+    primary = fields.BooleanField(default=True, index=True)
 
     created_at = fields.DatetimeField(auto_now_add=True)
     modified_at = fields.DatetimeField(auto_now=True)
