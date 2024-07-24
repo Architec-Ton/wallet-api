@@ -10,7 +10,7 @@ from uuid import UUID
 
 class NftMetaOut(ArchitectonBase):
     address: str | None = Field(default=None)
-    name: str = Field()
+    name: str | None = Field(default="unset")
     description: str | None = Field(default=None)
     image: str | None = Field(default=None)
     image_data: str | None = Field(default=None)

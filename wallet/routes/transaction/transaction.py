@@ -69,7 +69,12 @@ async def get_outcoming_transaction(trx: str):
 
     usd_rate = 5.98
     comment = None
-    if trx["out_msgs"][0]["@type"] == "raw.message" and "message" in trx["out_msgs"][0]:
+
+    if (
+        trx
+        and trx["out_msgs"][0]["@type"] == "raw.message"
+        and "message" in trx["out_msgs"][0]
+    ):
         comment = trx["out_msgs"][0]["message"]
 
     if trx is not None and len(trx["out_msgs"]) > 0:
