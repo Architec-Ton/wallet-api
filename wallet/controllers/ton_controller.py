@@ -57,5 +57,4 @@ class TonController:
         )
 
         trx = [t.to_dict_user_friendly() for t in transactions]
-
         return trx

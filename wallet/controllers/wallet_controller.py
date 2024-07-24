@@ -77,6 +77,8 @@ class WalletController:
                 logging.info(aw)
                 wallets[aw_idx].active = True
                 wallets[aw_idx].balance = aw.balance / (10 ** wallets[aw_idx].decimals)
+                if wallets[aw_idx].balance is None or wallets[aw_idx].balance == 0:
+                    wallets[aw_idx].active = False
                 if wallets[aw_idx].jetton.name == "BNK jetton":
                     wallets[aw_idx].usd_ratio = 0
                     wallets[aw_idx].change_ratio = 0
@@ -84,7 +86,10 @@ class WalletController:
                 await wallets[aw_idx].save()
             elif aw is None and wallets[aw_idx].active:
                 wallets[aw_idx].active = False
-                await wallets[aw_idx].save(update_fields="active")
+                try:
+                    await wallets[aw_idx].save(update_fields="active")
+                except Exception as e:
+                    logging.exception(e)
         if only_active:
             coins = [CoinOut.model_validate(w) for w in wallets if w.active]
         else:
@@ -94,7 +99,7 @@ class WalletController:
             ton_asset = CoinOut(
                 type="ton",
                 amount=balance,
-                usd_price=balance * 7.44,
+                usd_price=balance * 7.44 if balance is not None else 0,
                 change_price=0,
                 meta={
                     "name": "TON",
