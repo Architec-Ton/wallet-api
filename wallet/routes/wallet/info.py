@@ -83,9 +83,9 @@ async def get_wallet_info(
     txs = []
     usd_price = 0
     try:
-        seqno = await wc.update_transaction(address)
+        # seqno = await wc.update_transaction(address)
         # address = Address("0QCto-hxbOIBe_G6ub3s3_murlWrPBo__j8zI4Fka8PAMGBK")
-        has_transaction = await wc.update_transaction(address)
+        # has_transaction = await wc.update_transaction(address)
         assets = await wc.get_assets(address)
         txs = await TonController().get_transactions(address)
         usd_price = sum([a.usd_price for a in assets if a.usd_price is not None])
