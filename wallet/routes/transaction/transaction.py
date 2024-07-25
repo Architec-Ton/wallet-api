@@ -56,14 +56,22 @@ async def create_outcoming_transaction(trx_in: TransactionItemCreateIn):
 
 
 @router.get("/{trx}")  # , response_model=TransactionItemOut)
-async def get_outcoming_transaction(trx: str):
+async def get_outcoming_transaction(
+    trx: str,
+    user: UserOut = Depends(get_user),
+):
     address = "EQB1VVAKYHxXrg-zlLH0V3xRuhobNrPOZUHz24ghzUDhZsNL"
-    trx_id = bytes.fromhex(trx)
-    destination, lt = trx_id.decode().split(".")
+    address = user.address
+    trx = None
+    try:
+        trx_id = bytes.fromhex(trx)
+        destination, lt = trx_id.decode().split(".")
 
-    trx = await TransactionController().get_outcomig_trx(
-        Address(address), Address(destination), int(lt)
-    )
+        trx = await TransactionController().get_outcomig_trx(
+            Address(address), Address(destination), int(lt)
+        )
+    except Exception as e:
+        logging.error(e)
 
     # return trx
 
