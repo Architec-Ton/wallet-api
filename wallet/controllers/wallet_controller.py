@@ -72,7 +72,6 @@ class WalletController:
             wallets = await self.get_wallets(owner_address, include_symbols)
 
         assets_tsk = [self.ton.get_jetton_wallet(w.wallet_address) for w in wallets]
-
         assets_wallets = await asyncio.gather(*assets_tsk)
         for aw_idx, aw in enumerate(assets_wallets):
             if aw is not None:

@@ -78,11 +78,19 @@ async def get_wallet_info(
     wc = WalletController()
 
     address = Address(user.address)
-    seqno = await wc.update_transaction(address)
-    # address = Address("0QCto-hxbOIBe_G6ub3s3_murlWrPBo__j8zI4Fka8PAMGBK")
-    has_transaction = await wc.update_transaction(address)
-    assets = await wc.get_assets(address)
-    txs = await TonController().get_transactions(address)
+    seqno = None
+    assets = []
+    txs = []
+    usd_price = 0
+    try:
+        seqno = await wc.update_transaction(address)
+        # address = Address("0QCto-hxbOIBe_G6ub3s3_murlWrPBo__j8zI4Fka8PAMGBK")
+        has_transaction = await wc.update_transaction(address)
+        assets = await wc.get_assets(address)
+        txs = await TonController().get_transactions(address)
+        usd_price = sum([a.usd_price for a in assets if a.usd_price is not None])
+    except BaseException as e:
+        logging.error(e)
 
     # transactions = await TonController().get_transactions(Address(user.address))
     # logging.info(transactions)
@@ -91,7 +99,6 @@ async def get_wallet_info(
     # for t in transactions:
     #     logging.info(f"transactions: {t.to_dict()}")
 
-    usd_price = sum([a.usd_price for a in assets if a.usd_price is not None])
     change_price = 0.01
 
     wallet = WalletOut(
