@@ -116,14 +116,20 @@ class WalletController:
         return coins
 
     async def get_seqno(self, owner_address: Address):
-        return await self.ton.ton_client.tc_client.get_wallet_seqno(
-            owner_address.to_string()
-        )
+        try:
+            return await self.ton.ton_client.tc_client.get_wallet_seqno(
+                owner_address.to_string()
+            )
+        except BaseException as e:
+            logging.error(e)
 
     async def get_balance(self, owner_address: Address):
-        return await self.ton.ton_client.tc_client.get_balance(
-            owner_address.to_string()
-        )
+        try:
+            return await self.ton.ton_client.tc_client.get_balance(
+                owner_address.to_string()
+            )
+        except BaseException as e:
+            logging.error(e)
 
     async def update_transaction(self, owner_address: Address) -> int | None:
         wallet = await self.get_or_create(owner_address)
