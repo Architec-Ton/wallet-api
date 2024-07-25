@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import datetime
 from typing import List, Optional
 
 from TonTools import TonCenterClient, LsClient, TonApiClient
@@ -7,7 +8,8 @@ from tonsdk.utils import Address
 
 from .ton.ton_client import TonClient
 from .ton_controller import TonController
-from ..models import JettonMaster, JettonWallet
+from ..models import JettonMaster, JettonWallet, Wallet
+from ..models.base_address_model import BaseTonAddress
 from ..view.wallet.coin import CoinOut
 
 
@@ -112,3 +114,60 @@ class WalletController:
             coins.insert(0, ton_asset)
 
         return coins
+
+    async def get_seqno(self, owner_address: Address):
+        return await self.ton.ton_client.tc_client.get_wallet_seqno(
+            owner_address.to_string()
+        )
+
+    async def get_balance(self, owner_address: Address):
+        return await self.ton.ton_client.tc_client.get_balance(
+            owner_address.to_string()
+        )
+
+    async def update_transaction(self, owner_address: Address) -> int | None:
+        wallet = await self.get_or_create(owner_address)
+        if wallet and wallet.transaction:
+            seqno = await self.get_seqno(owner_address)
+            if (
+                wallet.last_seqno is None
+                or seqno != wallet.last_seqno
+                or (
+                    wallet.transaction_expire_at is not None
+                    and wallet.transaction_expire_at
+                    > datetime.datetime.now(datetime.timezone.utc)
+                )
+            ):
+                balance = await self.get_balance(owner_address)
+                wallet.balance = balance
+                wallet.last_seqno = seqno
+                wallet.transaction = False
+                wallet.transaction_expire_at = None
+                await wallet.save(
+                    update_fields=[
+                        "last_seqno",
+                        "transaction",
+                        "transaction_expire_at",
+                        "balance",
+                    ]
+                )
+            return wallet.last_seqno if wallet.transaction else None
+        return None
+
+    @staticmethod
+    async def get_or_create(owner_address: Address) -> Wallet:
+        wallet = await Wallet.get_by_address(owner_address)
+        if wallet is not None:
+            return wallet
+        address_base64, address_raw, address_hash, mainnet = Wallet._address_setter(
+            owner_address
+        )
+
+        return await Wallet.create(
+            address_base64=address_base64,
+            address_raw=address_raw,
+            address_hash=address_hash,
+            decimals=9,
+            mainnet=False,  # not owner_address.is_test_only,
+            symbol="TON",
+        )

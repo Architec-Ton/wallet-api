@@ -93,3 +93,10 @@ async def get_outcoming_transaction(trx: str):
         )
 
         return trx_out
+
+
+@router.get("s/seqno")  # , response_model=TransactionItemOut)
+async def get_seqno(trx: str):
+    address = "EQB1VVAKYHxXrg-zlLH0V3xRuhobNrPOZUHz24ghzUDhZsNL"
+
+    return await WalletController().get_seqno(Address(address))

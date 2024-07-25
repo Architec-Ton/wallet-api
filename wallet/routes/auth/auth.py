@@ -1,3 +1,4 @@
+import datetime
 import logging
 import random
 import uuid
@@ -5,9 +6,11 @@ from typing import List
 from faker import Faker
 
 from fastapi import APIRouter
+from tonsdk.utils import Address
 
 from wallet.auth.auth import telegram_validate
 from wallet.auth.token import create_token
+from wallet.controllers.wallet_controller import WalletController
 from wallet.view.auth.auth import AuthIn, AuthOut
 
 router = APIRouter(tags=["Auth"])

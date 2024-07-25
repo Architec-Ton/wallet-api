@@ -75,11 +75,13 @@ async def get_wallet_info(
 ):
     # logging.info(user)
 
+    wc = WalletController()
+
     address = Address(user.address)
-
+    seqno = await wc.update_transaction(address)
     # address = Address("0QCto-hxbOIBe_G6ub3s3_murlWrPBo__j8zI4Fka8PAMGBK")
-
-    assets = await WalletController().get_assets(address)
+    has_transaction = await wc.update_transaction(address)
+    assets = await wc.get_assets(address)
     txs = await TonController().get_transactions(address)
 
     # transactions = await TonController().get_transactions(Address(user.address))
@@ -98,6 +100,7 @@ async def get_wallet_info(
         change_price=change_price,
         assets=assets,
         history=txs,
+        seqno=seqno,
     )
 
     return {"current_wallet": 0, "wallets": [wallet]}
