@@ -9,12 +9,14 @@ from .wallet import router as wallet_router
 from .admin import router as admin_router
 from .app import router as app_router
 from .transfer import router as transfer_router
+from .transaction import router as transaction_router
 
 
 router = APIRouter()
 
 router.include_router(auth_router, prefix="/auth")
 router.include_router(wallet_router, prefix="")
+router.include_router(transaction_router)
 router.include_router(transfer_router, prefix="/transfer")
 router.include_router(app_router, prefix="")
 router.include_router(bank_router, prefix="")

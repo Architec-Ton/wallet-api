@@ -35,3 +35,7 @@ class BaseTonAddress(Model):
         self.address_base64, self.address_raw, self.address_hash, self.mainnet = (
             BaseTonAddress._address_setter(value)
         )
+
+    @classmethod
+    async def get_by_address(cls, owner_addres: Address):
+        return await cls.get_or_none(address_hash=owner_addres.hash_part.hex())

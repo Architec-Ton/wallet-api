@@ -71,16 +71,26 @@ mock = [
 
 @router.get("", response_model=InfoOut)
 async def get_wallet_info(
-    # user: UserOut = Depends(get_user),
+    user: UserOut = Depends(get_user),
 ):
     # logging.info(user)
 
-    # address = Address(user.address)
+    wc = WalletController()
 
-    address = Address("0QCto-hxbOIBe_G6ub3s3_murlWrPBo__j8zI4Fka8PAMGBK")
-
-    assets = await WalletController().get_assets(address)
-    txs = await TonController().get_transactions(address)
+    address = Address(user.address)
+    seqno = None
+    assets = []
+    txs = []
+    usd_price = 0
+    try:
+        # seqno = await wc.update_transaction(address)
+        # address = Address("0QCto-hxbOIBe_G6ub3s3_murlWrPBo__j8zI4Fka8PAMGBK")
+        # has_transaction = await wc.update_transaction(address)
+        assets = await wc.get_assets(address)
+        txs = await TonController().get_transactions(address)
+        usd_price = sum([a.usd_price for a in assets if a.usd_price is not None])
+    except BaseException as e:
+        logging.error(e)
 
     # transactions = await TonController().get_transactions(Address(user.address))
     # logging.info(transactions)
@@ -89,7 +99,6 @@ async def get_wallet_info(
     # for t in transactions:
     #     logging.info(f"transactions: {t.to_dict()}")
 
-    usd_price = sum([a.usd_price for a in assets if a.usd_price is not None])
     change_price = 0.01
 
     wallet = WalletOut(
@@ -98,6 +107,7 @@ async def get_wallet_info(
         change_price=change_price,
         assets=assets,
         history=txs,
+        seqno=seqno,
     )
 
     return {"current_wallet": 0, "wallets": [wallet]}

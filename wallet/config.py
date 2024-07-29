@@ -20,3 +20,6 @@ TORTOISE_ORM = {
     "use_tz": True,
     "timezone": "UTC",
 }
+
+
+TON_CLIENT_API_URL = "https://testnet.toncenter.com"
