@@ -21,5 +21,4 @@ TORTOISE_ORM = {
     "timezone": "UTC",
 }
 
-
-TON_CLIENT_API_URL = "https://testnet.toncenter.com"
+TON_CLIENT_API_URL = os.getenv("TON_CLIENT_API_URL", "https://testnet.toncenter.com")
