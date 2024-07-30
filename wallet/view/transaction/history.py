@@ -13,6 +13,8 @@ class HistoryItemType(str, Enum):
     received = "received"
     send = "send"
     swap = "swap"
+    stack = "stack"
+    claim = "claim"
 
 
 class HistoryItemOut(ArchitectonBase):

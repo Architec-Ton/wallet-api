@@ -8,11 +8,13 @@ from tonsdk.utils import Address
 
 from wallet.auth import get_user
 from wallet.controllers.bank_controller import BankController
+from wallet.controllers.transaction_controller import TransactionController
 from wallet.controllers.wallet_controller import WalletController
 from wallet.view.auth.user import UserOut
 from wallet.view.bank.BankBuyInfo import BankBuyInfo
 from wallet.view.bank.BankInfo import BankInfo
 from wallet.view.game.game import GameOut
+from wallet.view.transaction.history import HistoryItemOut
 
 fake = Faker()
 
@@ -64,6 +66,47 @@ async def get_bank_info(
         BankController().get_stacked_arcs(owner_address),
     )
 
+    txs = []
+    btxs = []
+    try:
+        txs = await TransactionController().get_trx(owner_address, limit=10)
+        for tx in txs:
+            if (
+                tx["type"] == "out"
+                # and tx["address_to"]
+                # == "EQDH44zKWXRPooEjOkbIyGoscqSTN9BfHc3HhKISe2nefPWA"
+                and tx["value"] == 0.35
+            ):
+                btxs.append(
+                    HistoryItemOut(
+                        type="stack",
+                        utime=tx["utime"],
+                        address_from=tx["address_from"],
+                        address_to=tx["address_to"],
+                        status=True,
+                        symbol="BNK",
+                    )
+                )
+            if (
+                tx["type"] == "out"
+                and tx["address_to"]
+                == "EQAj1qW6WZTd7sd33Uk48O3TqxNPMjYrgwRHAcBM8RcQCQAD"
+                and tx["value"] == 0.07
+            ):
+                btxs.append(
+                    HistoryItemOut(
+                        type="claim",
+                        utime=tx["utime"],
+                        address_from=tx["address_from"],
+                        address_to=tx["address_to"],
+                        status=True,
+                        symbol="ARC",
+                    )
+                )
+
+    except BaseException as e:
+        logging.error(e)
+
     logging.info("-----")
     logging.info(ark)
 
@@ -76,4 +119,5 @@ async def get_bank_info(
         bankers=7344,
         free_banks=252342,
         total_banks=500000,
+        history=btxs,
     )
