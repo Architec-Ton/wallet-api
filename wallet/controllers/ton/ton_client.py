@@ -21,7 +21,9 @@ class TonClient:
         # self.api_client = aiohttp.ClientSession(base_url=TON_CLIENT_API_URL)
 
     async def get_by_api(self, url: str, params=None):
-        async with aiohttp.ClientSession(base_url=TON_CLIENT_API_GET_URL) as session:
+        async with aiohttp.ClientSession(
+            base_url="https://ton.architecton.site"
+        ) as session:
             # params = {"address": address, "limit": 3, "archival": 1}
             response = await session.get(
                 url=f"{TON_CLIENT_API_URL_PREFIX}/{url}", params=params
