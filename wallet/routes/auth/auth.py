@@ -29,7 +29,7 @@ async def post_auth(init_data: AuthIn):
 
     if init_data.init_ton:
         payload["address"] = init_data.init_ton.address
-        payload["net"] = "testnet"
+        payload["net"] = "mainnet"
 
     if init_data.init_data_raw:
         payload["name"] = init_data.init_data_raw.user.username
