@@ -25,9 +25,7 @@ class TonClient:
             base_url="https://ton.architecton.site"
         ) as session:
             # params = {"address": address, "limit": 3, "archival": 1}
-            response = await session.get(
-                url=f"{TON_CLIENT_API_URL_PREFIX}/{url}", params=params
-            )
+            response = await session.get(url=f"/{url}", params=params)
             data_income = await response.json()
             # logging.info(data_income)
             if "ok" in data_income:
