@@ -14,7 +14,8 @@ class TonClient:
 
     def __init__(self):
         self.tc_client = TonCenterClient(
-            base_url=f"{TON_CLIENT_API_URL}{TON_CLIENT_API_URL_PREFIX}/",
+            base_url="https://ton.architecton.site/",
+            # base_url=f"{TON_CLIENT_API_URL}{TON_CLIENT_API_URL_PREFIX}/",
             key="88d5912ad2394e5cbae97a351bb6a3e1174e09f7956d096beaae3acab91324da",
         )
         # self.tc_client.base_url = f"{TON_CLIENT_API_URL}{TON_CLIENT_API_URL_PREFIX}/"
