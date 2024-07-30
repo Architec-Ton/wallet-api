@@ -18,8 +18,8 @@ class HistoryItemType(str, Enum):
 class HistoryItemOut(ArchitectonBase):
     type: str
     utime: int
-    address_from: str | None = Field(default=None, alias="from")
-    address_to: str | None = Field(default=None, alias="to")
+    address_from: str | None = Field(default=None)
+    address_to: str | None = Field(default=None)
     status: bool
     value: float | None = Field(default=None)
     symbol: str | None = Field(default="TON")
