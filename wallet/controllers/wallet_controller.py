@@ -88,7 +88,7 @@ class WalletController:
             elif aw is None and wallets[aw_idx].active:
                 wallets[aw_idx].active = False
                 try:
-                    await wallets[aw_idx].save(update_fields="active")
+                    await wallets[aw_idx].save(update_fields=["active"])
                 except Exception as e:
                     logging.exception(e)
         if only_active:
