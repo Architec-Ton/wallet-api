@@ -3,8 +3,8 @@ import os
 from fastapi.exceptions import HTTPException
 import hmac
 import hashlib
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from fastapi import Request, Depends
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer, APIKeyHeader
+from fastapi import Request, Depends, Security
 from jose import jwt
 
 from wallet.errors import APIException
@@ -12,6 +12,15 @@ from wallet.view.auth.auth import AuthIn
 from wallet.view.auth.user import UserOut
 
 ALGORITHM = os.getenv("WALLET_API_ALGORITHM", "RS256")
+
+
+admin_api = APIKeyHeader(name="ApiKey", auto_error=True)
+
+
+async def api_admin_key_auth(key = Security(admin_api)):
+    if key!= "a0a36fb2-f819-4f0b-be8e-777b72eb36a3":
+        raise HTTPException(status_code=401)
+
 
 def load_jwt_key(filename: str):
     with open(filename) as key_file:
