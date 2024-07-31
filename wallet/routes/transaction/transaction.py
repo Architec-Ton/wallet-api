@@ -27,14 +27,19 @@ router = APIRouter()
 
 
 @router.get("s")  # , response_model=HistoryItemOut)
-async def get_transaction():
+async def get_transaction(
+    user: UserOut = Depends(get_user),
+):
     address = "EQB1VVAKYHxXrg-zlLH0V3xRuhobNrPOZUHz24ghzUDhZsNL"
 
     return await TransactionController().get_transactions(Address(address))
 
 
 @router.post("")  # , response_model=HistoryItemOut)
-async def create_outcoming_transaction(trx_in: TransactionItemCreateIn):
+async def create_outcoming_transaction(
+    trx_in: TransactionItemCreateIn,
+    user: UserOut = Depends(get_user),
+):
     address = "EQB1VVAKYHxXrg-zlLH0V3xRuhobNrPOZUHz24ghzUDhZsNL"
 
     transactions = await TransactionController().get_transactions(
