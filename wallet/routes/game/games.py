@@ -38,7 +38,7 @@ mock = [
 async def get_games(
     search: str | None = Query(default=None),
     categoryId: str | None = Query(default=None),
-    # user: UserOut = Depends(get_user),
+    user: UserOut = Depends(get_user),
 ):
     # logging.info(f"u2: {user}")
     return mock
