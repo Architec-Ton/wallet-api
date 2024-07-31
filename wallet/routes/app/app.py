@@ -28,7 +28,7 @@ async def get_apps(
     if filter_in.search is None and filter_in.category_id is None:
         logging.info(f"u2: {user}")
         categories_with_apps, marketings = await asyncio.gather(
-            AppCategory.filter(active=True, apps__active=True)
+            AppCategory.filter(active=True)
             .order_by("order")
             .prefetch_related("apps", "apps__icon"),
             AppMarketing.all().order_by("order").prefetch_related("image"),
@@ -37,7 +37,7 @@ async def get_apps(
         marketings = []
         query = Q()
         if filter_in.category_id is not None:
-            query = Q(id=filter_in.category_id, active=True, apps__active=True)
+            query = Q(id=filter_in.category_id, active=True)
         if filter_in.search is not None:
             query = query & Q(apps__title_en__icontains=filter_in.search)
         categories_with_apps = (
