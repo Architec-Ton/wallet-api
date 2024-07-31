@@ -26,10 +26,10 @@ router = APIRouter()
 async def get_send_info(
     send: str = Query(),
     recv: str = Query(),
-    # user: UserOut = Depends(get_user),
+    user: UserOut = Depends(get_user),
 ):
-    # owner_address = Address(user.address)
-    owner_address = Address("0QCto-hxbOIBe_G6ub3s3_murlWrPBo__j8zI4Fka8PAMGBK")
+    owner_address = Address(user.address)
+    # owner_address = Address("0QCto-hxbOIBe_G6ub3s3_murlWrPBo__j8zI4Fka8PAMGBK")
 
     # send, recv = await asyncio.gather(
     #     WalletController().get_assets(
