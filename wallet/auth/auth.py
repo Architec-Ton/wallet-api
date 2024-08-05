@@ -10,6 +10,7 @@ from jose import jwt
 from wallet.errors import APIException
 from wallet.view.auth.auth import AuthIn
 from wallet.view.auth.user import UserOut
+from wallet.config import ADMIN_AUTH_KEY
 
 ALGORITHM = os.getenv("WALLET_API_ALGORITHM", "RS256")
 
@@ -17,8 +18,8 @@ ALGORITHM = os.getenv("WALLET_API_ALGORITHM", "RS256")
 admin_api = APIKeyHeader(name="ApiKey", auto_error=True)
 
 
-async def api_admin_key_auth(key = Security(admin_api)):
-    if key!= "a0a36fb2-f819-4f0b-be8e-777b72eb36a3":
+async def api_admin_key_auth(key=Security(admin_api)):
+    if key != ADMIN_AUTH_KEY:
         raise HTTPException(status_code=401)
 
 
