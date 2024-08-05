@@ -17,8 +17,8 @@ ALGORITHM = os.getenv("WALLET_API_ALGORITHM", "RS256")
 admin_api = APIKeyHeader(name="ApiKey", auto_error=True)
 
 
-async def api_admin_key_auth(key = Security(admin_api)):
-    if key!= "a0a36fb2-f819-4f0b-be8e-777b72eb36a3":
+async def api_admin_key_auth(key=Security(admin_api)):
+    if key != API_ADMIN_KEY:
         raise HTTPException(status_code=401)
 
 
@@ -27,8 +27,8 @@ def load_jwt_key(filename: str):
         return key_file.read()
 
 
-
 pubk = load_jwt_key('./security/api.crt')
+
 
 class JWTBearer(HTTPBearer):
     def __init__(self, auto_error: bool = True):
@@ -64,10 +64,10 @@ class JWTBearer(HTTPBearer):
 
 def get_user(token_data=Depends(JWTBearer())) -> UserOut:
 
-    user =  UserOut.model_validate({
-        "name" : token_data['name'] if 'name' in token_data else None,
+    user = UserOut.model_validate({
+        "name": token_data['name'] if 'name' in token_data else None,
         "tgId": int(token_data['sub']) if 'sub' in token_data else None,
-        "sessionId":token_data['iss'],
+        "sessionId": token_data['iss'],
         "net": token_data['net'] if 'net' in token_data else None,
         "lang": token_data['lang'] if 'lang' in token_data else None,
         "address": token_data['address'] if 'address' in token_data else None,
