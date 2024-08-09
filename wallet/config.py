@@ -31,6 +31,7 @@ TON_CLIENT_API_URL_PREFIX = os.getenv("TON_CLIENT_API_URL_PREFIX", "/api/v2")
 TON_CLIENT_API_GET_URL = os.getenv(
     "TON_CLIENT_API_GET_URL", "https://ton.architecton.site"
 )
+TON_CLIENT_API_KEY = os.getenv("TON_CLIENT_API_KEY", "88d5912ad2394e5cbae97a351bb6a3e1174e09f7956d096beaae3acab91324da")
 
 ADMIN_AUTH_KEY = os.getenv("ADMIN_AUTH_KEY", "")
 
