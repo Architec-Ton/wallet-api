@@ -7,6 +7,7 @@ from faker import Faker
 from tonsdk.utils import Address
 
 from wallet.auth import get_user
+from wallet.config import MASTER_WALLET_BANK
 from wallet.controllers.bank_controller import BankController
 from wallet.controllers.transaction_controller import TransactionController
 from wallet.controllers.wallet_controller import WalletController
@@ -89,8 +90,7 @@ async def get_bank_info(
                 )
             if (
                 tx["type"] == "out"
-                and tx["address_to"]
-                == "EQAj1qW6WZTd7sd33Uk48O3TqxNPMjYrgwRHAcBM8RcQCQAD"
+                and tx["address_to"] == MASTER_WALLET_BANK
                 and tx["value"] == 0.07
             ):
                 btxs.append(
