@@ -6,6 +6,7 @@ from faker import Faker
 from tonsdk.utils import Address
 
 from wallet.auth import get_user
+from wallet.config import TON_CLIENT_NETWORK
 from wallet.controllers.ton_controller import TonController
 from wallet.controllers.wallet_controller import WalletController
 from wallet.models import JettonMaster
@@ -29,16 +30,18 @@ async def create_jetton_master(address: str):
 
 @router.post("/import")
 async def post_imposrt_jettons():
-    jettons = [
-        "kQBuFWV6jW_9F69A3qjn5rpqfG4eIMBJs9GFSrZU7d33EmIG",  #  "kQCkaGQTCUMUzu5b9IDYY4EjGI4hLIrnnKa5oAhgymxp9pES",  # BNK
-        "kQDJ4yZlYHbwbUtFAtyk7YOMt7cWUY-Hk0TB9-pg2ZOxHMMf",  # "kQCidZd9oBoqDtTSp91BCTMvcpwGJkut7qdtOZKZXlVnBDb7",  # ARC
-        "EQDnRHbK5vJBLQyAnS6V8XNoRerCebnn9A2FlVlHtFVLFGZ-",
-    ]
-    jettons = [
-        "EQAj1qW6WZTd7sd33Uk48O3TqxNPMjYrgwRHAcBM8RcQCQAD",  #  "kQCkaGQTCUMUzu5b9IDYY4EjGI4hLIrnnKa5oAhgymxp9pES",  # BNK
-        "EQBXRdZTk5P49mL0nOYfDR1VR33N3sPUgB7PNQMaj6DhxOJH",  # "kQCidZd9oBoqDtTSp91BCTMvcpwGJkut7qdtOZKZXlVnBDb7",  # ARC
-        "EQCxE6mUtQJKFnGfaROTKOt1lZbDiiX1kCixRv7Nw2Id_sDs",
-    ]
+    if TON_CLIENT_NETWORK == "testnet":
+        jettons = [
+            "kQBuFWV6jW_9F69A3qjn5rpqfG4eIMBJs9GFSrZU7d33EmIG",  #  "kQCkaGQTCUMUzu5b9IDYY4EjGI4hLIrnnKa5oAhgymxp9pES",  # BNK
+            "kQDJ4yZlYHbwbUtFAtyk7YOMt7cWUY-Hk0TB9-pg2ZOxHMMf",  # "kQCidZd9oBoqDtTSp91BCTMvcpwGJkut7qdtOZKZXlVnBDb7",  # ARC
+            "EQDnRHbK5vJBLQyAnS6V8XNoRerCebnn9A2FlVlHtFVLFGZ-",
+        ]
+    else:
+        jettons = [
+            "EQAj1qW6WZTd7sd33Uk48O3TqxNPMjYrgwRHAcBM8RcQCQAD",  #  "kQCkaGQTCUMUzu5b9IDYY4EjGI4hLIrnnKa5oAhgymxp9pES",  # BNK
+            "EQBXRdZTk5P49mL0nOYfDR1VR33N3sPUgB7PNQMaj6DhxOJH",  # "kQCidZd9oBoqDtTSp91BCTMvcpwGJkut7qdtOZKZXlVnBDb7",  # ARC
+            "EQCxE6mUtQJKFnGfaROTKOt1lZbDiiX1kCixRv7Nw2Id_sDs",
+        ]
     out = []
     for j in jettons:
         try:

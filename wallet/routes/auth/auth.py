@@ -10,6 +10,7 @@ from tonsdk.utils import Address
 
 from wallet.auth.auth import telegram_validate
 from wallet.auth.token import create_token
+from wallet.config import TON_CLIENT_NETWORK
 from wallet.controllers.wallet_controller import WalletController
 from wallet.view.auth.auth import AuthIn, AuthOut
 
@@ -29,7 +30,7 @@ async def post_auth(init_data: AuthIn):
 
     if init_data.init_ton:
         payload["address"] = init_data.init_ton.address
-        payload["net"] = "mainnet"
+        payload["net"] = TON_CLIENT_NETWORK
 
     if init_data.init_data_raw:
         payload["name"] = init_data.init_data_raw.user.username
