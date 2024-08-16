@@ -1,10 +1,10 @@
 from fastapi import APIRouter
-from .jetton import router as jetton_router
-from .category import router as category_router
+
 from .app import router as app_router
 from .attachment import router as attachment_router
+from .category import router as category_router
+from .jetton import router as jetton_router
 from .marketing import router as marketing_router
-
 
 router = APIRouter(tags=["Admin"])
 

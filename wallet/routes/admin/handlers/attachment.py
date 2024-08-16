@@ -11,7 +11,6 @@ from fastapi import UploadFile
 from wallet.errors import APIException
 from wallet.models.attachment import Attachment
 
-
 # from .storage import copy_upload_file_stream
 from .storage import copy_file, copy_uploadfile, crop_to_aspect, scale_to_height
 
@@ -36,9 +35,7 @@ async def upload_attachment(file: UploadFile):
         upload_file_path = f"{STORAGE_PATH}/orig/{file.filename}"
         upload_file_extention = os.path.splitext(file.filename)[1].lower()
         file_hash = await copy_uploadfile(upload_file_path, file, 1024 * 1024 * 2)
-        upload_file_path_hash = (
-            f"{STORAGE_PATH}/orig/{file_hash}{upload_file_extention}"
-        )
+        upload_file_path_hash = f"{STORAGE_PATH}/orig/{file_hash}{upload_file_extention}"
         if upload_file_path_hash != upload_file_path:
             if await path.exists(upload_file_path_hash):
                 await aiofiles.os.remove(upload_file_path_hash)

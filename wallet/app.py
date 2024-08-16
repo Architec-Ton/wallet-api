@@ -1,9 +1,8 @@
-from fastapi import FastAPI, Request, HTTPException
+import logging
+
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
-import logging
-import time
-
 from starlette.staticfiles import StaticFiles
 from tortoise.contrib.fastapi import register_tortoise
 
@@ -21,7 +20,7 @@ app_base = "/api/v2/wallet"
 
 
 app = FastAPI(
-    title=f"Architec.TON API",
+    title="Architec.TON API",
     debug=True,
     docs_url=f"{app_base}/docs",
     redoc_url=None,
@@ -57,8 +56,6 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 
 app.include_router(router, prefix=app_base)
 
-register_tortoise(
-    app, generate_schemas=True, add_exception_handlers=True, config=TORTOISE_ORM
-)
+register_tortoise(app, generate_schemas=True, add_exception_handlers=True, config=TORTOISE_ORM)
 
 app.mount("/storage", StaticFiles(directory="./storage"), name="storage")

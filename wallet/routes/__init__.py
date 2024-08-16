@@ -1,16 +1,14 @@
 from fastapi import APIRouter, Depends
 
-from .bank import router as bank_router
-from .transfer import router as transfer_router
-from .auth import router as auth_router
-from .game import router as game_router
-from .wallet import router as wallet_router
-
+from ..auth.auth import api_admin_key_auth
 from .admin import router as admin_router
 from .app import router as app_router
-from .transfer import router as transfer_router
+from .auth import router as auth_router
+from .bank import router as bank_router
+from .game import router as game_router
 from .transaction import router as transaction_router
-from ..auth.auth import api_admin_key_auth
+from .transfer import router as transfer_router
+from .wallet import router as wallet_router
 
 router = APIRouter()
 
@@ -22,6 +20,4 @@ router.include_router(app_router, prefix="")
 router.include_router(bank_router, prefix="")
 router.include_router(game_router, prefix="/game")
 
-router.include_router(
-    admin_router, prefix="/admin", dependencies=[Depends(api_admin_key_auth)]
-)
+router.include_router(admin_router, prefix="/admin", dependencies=[Depends(api_admin_key_auth)])

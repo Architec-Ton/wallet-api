@@ -1,9 +1,10 @@
 from typing import List
-
-from .resources import GameResourceOut
-from ..base import ArchitectonBase
-from pydantic import Field
 from uuid import UUID
+
+from pydantic import Field
+
+from ..base import ArchitectonBase
+from .resources import GameResourceOut
 
 
 class GameItemOut(ArchitectonBase):

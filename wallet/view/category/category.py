@@ -1,16 +1,14 @@
-from typing import List, Dict
-
+from typing import Dict, List
 from uuid import UUID
 
-from ..base import ArchitectonBase
 from pydantic import Field
+
+from ..base import ArchitectonBase
 
 
 class CategoryCreateIn(ArchitectonBase):
     title_en: str = Field()
-    translation: Dict[str, str] | None = Field(
-        default=None, example={"ru": "Translation for RU"}
-    )
+    translation: Dict[str, str] | None = Field(default=None, example={"ru": "Translation for RU"})
 
 
 class CategoryUpdateIn(CategoryCreateIn):
@@ -23,7 +21,5 @@ class CategoryOut(ArchitectonBase):
 
 
 class CategoryDetailOut(CategoryOut):
-    translation: Dict[str, str] | None = Field(
-        default=None, example={"ru": "Translation for RU"}
-    )
+    translation: Dict[str, str] | None = Field(default=None, example={"ru": "Translation for RU"})
     slug: str = Field()

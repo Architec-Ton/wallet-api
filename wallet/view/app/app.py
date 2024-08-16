@@ -1,15 +1,14 @@
 from enum import Enum
-from typing import List, Dict
-
+from typing import Dict, List
 from uuid import UUID
 
-from .marketing import AppMarketingOut
-from .resource import AppResourceOut
-from ..base import ArchitectonBase
 from pydantic import Field, field_validator
 
-from ..category.category import CategoryOut
 from ...models import Attachment
+from ..base import ArchitectonBase
+from ..category.category import CategoryOut
+from .marketing import AppMarketingOut
+from .resource import AppResourceOut
 
 
 class AppTextIn(ArchitectonBase):
@@ -44,6 +43,7 @@ class AppUpdateIn(AppCreateIn):
     title_en: str | None = Field(default=None)
     subtitle_en: str | None = Field(default=None)
     description_en: str | None = Field(default=None)
+    is_partner: bool | None = Field(default=None)
     url: str | None = Field(default=None)
 
 
@@ -51,6 +51,7 @@ class AppShortOut(ArchitectonBase):
     id: UUID = Field()
     title: str = Field()
     subtitle: str = Field()
+    is_partner: bool = Field()
     icon: str | None = Field(default=None)
 
     @field_validator("icon", mode="before")

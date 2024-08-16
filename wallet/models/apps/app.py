@@ -51,6 +51,7 @@ class App(AttachmentMixin):
     # resources = fields.ReverseRelation("models.AppResource", "app_id")
 
     is_top = fields.BooleanField(index=True, default=False)
+    is_partner = fields.BooleanField(index=True, default=False)
     order: int = fields.SmallIntField(index=True, default=1000)
     active: int = fields.BooleanField(index=True, default=True)
 

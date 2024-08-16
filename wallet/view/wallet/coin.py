@@ -1,11 +1,11 @@
 from enum import Enum
-from typing import Union, List
+from typing import List, Union
+from uuid import UUID
 
+from pydantic import Field, field_validator
 from tonsdk.utils import Address
 
 from ..base import ArchitectonBase, BaseModel
-from pydantic import Field, field_validator
-from uuid import UUID
 
 
 class NftMetaOut(ArchitectonBase):

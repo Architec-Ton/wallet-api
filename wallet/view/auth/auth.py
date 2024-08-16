@@ -1,9 +1,10 @@
 from typing import List
-
-from .user import UserIn
-from ..base import ArchitectonBase, BaseModel
-from pydantic import Field
 from uuid import UUID
+
+from pydantic import Field
+
+from ..base import ArchitectonBase, BaseModel
+from .user import UserIn
 
 
 class InitDataIn(ArchitectonBase):

@@ -1,14 +1,10 @@
 from typing import List
 from uuid import UUID
 
-from wallet.view.app.marketing import (
-    AppMarketingCreateIn,
-    AppMarketingOut,
-)
-
 from fastapi import APIRouter
-from wallet.models.apps import AppMarketing
 
+from wallet.models.apps import AppMarketing
+from wallet.view.app.marketing import AppMarketingCreateIn, AppMarketingOut
 
 router = APIRouter()
 

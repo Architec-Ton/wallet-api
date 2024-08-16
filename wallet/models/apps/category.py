@@ -20,9 +20,7 @@ class AppCategory(Model):
     )
     slug = fields.CharField(max_length=128, index=True, unique=True)
     payload = fields.JSONField(default=None, null=True)
-    parent = fields.relational.ForeignKeyField(
-        "models.AppCategory", index=True, null=True, default=None
-    )
+    parent = fields.relational.ForeignKeyField("models.AppCategory", index=True, null=True, default=None)
     app_count: int = fields.SmallIntField(index=True, default=0)
     order: int = fields.SmallIntField(index=True, default=1000)
     active: int = fields.BooleanField(index=True, default=True)

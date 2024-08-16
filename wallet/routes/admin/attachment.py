@@ -2,19 +2,14 @@ import logging
 from typing import List, Optional
 from uuid import UUID
 
-from wallet.models import Attachment
-from wallet.routes.admin.handlers.attachment import upload_attachment, create_attachment
-from wallet.view.attachment.attachment import AttachmentOut
-from wallet.view.category.category import (
-    CategoryCreateIn,
-    CategoryDetailOut,
-    CategoryUpdateIn,
-)
-
-from fastapi import APIRouter, UploadFile, File, Form, Query
-from wallet.models.apps import AppCategory
-
+from fastapi import APIRouter, File, Form, Query, UploadFile
 from slugify import slugify
+
+from wallet.models import Attachment
+from wallet.models.apps import AppCategory
+from wallet.routes.admin.handlers.attachment import create_attachment, upload_attachment
+from wallet.view.attachment.attachment import AttachmentOut
+from wallet.view.category.category import CategoryCreateIn, CategoryDetailOut, CategoryUpdateIn
 
 router = APIRouter()
 

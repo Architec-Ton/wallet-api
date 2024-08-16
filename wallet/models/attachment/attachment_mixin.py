@@ -1,9 +1,10 @@
 from typing import List
 from uuid import UUID, uuid4
 
-from tortoise import fields, Model
+from tortoise import Model, fields
 
 from wallet.errors import APIException
+
 from .attachment import Attachment
 from .attachment_connection import AttachmentConnection
 
@@ -43,17 +44,13 @@ class AttachmentMixin(Model):
     async def update_attachments(self, attachment_ids: List[UUID] | None):
         if attachment_ids is None:
             return
-        current_attachments = await AttachmentConnection.filter(
-            entity_id=self.id
-        ).prefetch_related("attachment")
+        current_attachments = await AttachmentConnection.filter(entity_id=self.id).prefetch_related("attachment")
         current_attachments_ids = set([a.attachment_id for a in current_attachments])
 
         # drop old
         remove_attachment_ids = current_attachments_ids - set(attachment_ids)
         for rid in remove_attachment_ids:
-            ra = next(
-                a.attachment for a in current_attachments if a.attachment_id == rid
-            )
+            ra = next(a.attachment for a in current_attachments if a.attachment_id == rid)
             await ra.remove(self.id)
 
         # add new

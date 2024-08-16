@@ -1,10 +1,9 @@
 import datetime
 import logging
 
-from jose import jwt, JWTError
+from jose import JWTError, jwt
 
 from wallet.errors import APIException
-
 
 
 def load_jwt_key(filename: str):
@@ -12,8 +11,7 @@ def load_jwt_key(filename: str):
         return key_file.read()
 
 
-
-pk = load_jwt_key('./security/api.pem')
+pk = load_jwt_key("./security/api.pem")
 
 
 def create_token(data):
