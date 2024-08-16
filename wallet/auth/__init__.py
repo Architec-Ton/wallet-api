@@ -1,1 +1,1 @@
-from .auth import JWTBearer, get_user
+from .auth import JWTBearer, get_user  # noqa

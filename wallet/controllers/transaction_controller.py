@@ -2,10 +2,10 @@ import logging
 
 from tonsdk.utils import Address
 
-from .ton.ton_client import TonClient
-from .ton_controller import TonController
 from ..config import TON_CLIENT_API_URL
 from ..view.transaction.history import HistoryItemOut
+from .ton.ton_client import TonClient
+from .ton_controller import TonController
 
 
 class TransactionController:
@@ -23,21 +23,15 @@ class TransactionController:
             out_msg = data["out_msgs"][0]
             tx["type"] = "out"
             tx["address_from"] = out_msg["source"] if "source" in out_msg else None
-            tx["address_to"] = (
-                out_msg["destination"] if "destination" in out_msg else None
-            )
+            tx["address_to"] = out_msg["destination"] if "destination" in out_msg else None
             tx["status"] = True
-            tx["value"] = (
-                int(out_msg["value"]) / (10**9) if "value" in out_msg else None
-            )
+            tx["value"] = int(out_msg["value"]) / (10**9) if "value" in out_msg else None
             tx["symbol"] = "TON"
         elif "in_msg" in data:
             in_msg = data["in_msg"]
             tx["type"] = "in"
             tx["address_from"] = in_msg["source"] if "source" in in_msg else None
-            tx["address_to"] = (
-                in_msg["destination"] if "destination" in in_msg else None
-            )
+            tx["address_to"] = in_msg["destination"] if "destination" in in_msg else None
             tx["status"] = True
             tx["value"] = int(in_msg["value"]) / (10**9) if "value" in in_msg else None
             tx["symbol"] = "TON"
@@ -88,9 +82,7 @@ class TransactionController:
                             last_lt = trx["out_msgs"][0]["created_lt"]
                             return last_lt
 
-    async def get_outcomig_trx(
-        self, source: Address, destination: Address, lt: int
-    ) -> int | None:
+    async def get_outcomig_trx(self, source: Address, destination: Address, lt: int) -> int | None:
         params = {
             "source": source.to_string(),
             "destination": destination.to_string(),

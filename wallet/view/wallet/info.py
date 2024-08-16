@@ -1,12 +1,12 @@
 from enum import Enum
-from typing import Union, List
-
-from ..base import ArchitectonBase, BaseModel
-from .coin import CoinOut
-from pydantic import Field
+from typing import List, Union
 from uuid import UUID
 
+from pydantic import Field
+
+from ..base import ArchitectonBase, BaseModel
 from ..transaction.history import HistoryItemOut
+from .coin import CoinOut
 
 
 class WalletOut(ArchitectonBase):

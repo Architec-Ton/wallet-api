@@ -15,9 +15,7 @@ class Wallet(BaseTonAddress):
 
     type = fields.CharField(max_length=8, null=True, default="v4r")
 
-    balance = fields.DecimalField(
-        max_digits=49, decimal_places=9, null=True, default=None, index=True
-    )
+    balance = fields.DecimalField(max_digits=49, decimal_places=9, null=True, default=None, index=True)
     last_seqno = fields.BigIntField(default=None, index=True, null=True)
     transaction = fields.BooleanField(default=True, index=True, null=True)
     transaction_expire_at = fields.DatetimeField(default=None, null=True)

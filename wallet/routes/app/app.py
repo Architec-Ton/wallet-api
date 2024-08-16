@@ -3,18 +3,14 @@ import logging
 import random
 import uuid
 from typing import List
-from faker import Faker
 
-from wallet.auth import get_user
-from wallet.models import AppCategory, App, AppMarketing
-from wallet.view.app.app import AppsCategoriesOut, AppDetailOut, AppsOut, AppsFilterIn
-from wallet.view.auth.user import UserOut
-
-fake = Faker()
-
-from fastapi import APIRouter, Query, Depends
+from fastapi import APIRouter, Depends, Query
 from tortoise.queryset import Q
 
+from wallet.auth import get_user
+from wallet.models import App, AppCategory, AppMarketing
+from wallet.view.app.app import AppDetailOut, AppsCategoriesOut, AppsFilterIn, AppsOut
+from wallet.view.auth.user import UserOut
 from wallet.view.game.games import GameCategoryOut
 
 router = APIRouter()
@@ -28,9 +24,7 @@ async def get_apps(
     if filter_in.search is None and filter_in.category_id is None:
         logging.info(f"u2: {user}")
         categories_with_apps, marketings = await asyncio.gather(
-            AppCategory.filter(active=True)
-            .order_by("order")
-            .prefetch_related("apps", "apps__icon"),
+            AppCategory.filter(active=True).order_by("order").prefetch_related("apps", "apps__icon"),
             AppMarketing.all().order_by("order").prefetch_related("image"),
         )
     else:
@@ -40,11 +34,7 @@ async def get_apps(
             query = Q(id=filter_in.category_id, active=True)
         if filter_in.search is not None:
             query = query & Q(apps__title_en__icontains=filter_in.search)
-        categories_with_apps = (
-            await AppCategory.filter(query)
-            .order_by("order")
-            .prefetch_related("apps", "apps__icon")
-        )
+        categories_with_apps = await AppCategory.filter(query).order_by("order").prefetch_related("apps", "apps__icon")
         # r = AppsOut(categories=categories_with_apps, marketings=marketings).model_dump()
         # if filter_in.search is not None:
         #     s = filter_in.search.lower().strip()
@@ -63,7 +53,5 @@ async def get_apps(
 
 @router.get("/{app_id}", response_model=AppDetailOut)
 async def get_app(app_id: uuid.UUID, user: UserOut = Depends(get_user)):
-    app = await App.get(id=app_id).prefetch_related(
-        "icon", "attachments", "resources", "resources__icon"
-    )
+    app = await App.get(id=app_id).prefetch_related("icon", "attachments", "resources", "resources__icon")
     return app

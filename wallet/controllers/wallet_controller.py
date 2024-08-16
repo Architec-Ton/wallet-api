@@ -1,16 +1,16 @@
 import asyncio
-import logging
 import datetime
+import logging
 from typing import List, Optional
 
-from TonTools import TonCenterClient, LsClient, TonApiClient
 from tonsdk.utils import Address
+from TonTools import LsClient, TonApiClient, TonCenterClient
 
-from .ton.ton_client import TonClient
-from .ton_controller import TonController
 from ..models import JettonMaster, JettonWallet, Wallet
 from ..models.base_address_model import BaseTonAddress
 from ..view.wallet.coin import CoinOut
+from .ton.ton_client import TonClient
+from .ton_controller import TonController
 
 
 class WalletController:
@@ -20,23 +20,15 @@ class WalletController:
 
     async def get_jetton(self, jetton_master_address: Address, owner_address: Address):
         # TODO get from db or network
-        jetton_wallet_address = await self.ton.get_jetton_wallet_address(
-            jetton_master_address, owner_address
-        )
+        jetton_wallet_address = await self.ton.get_jetton_wallet_address(jetton_master_address, owner_address)
         jetton_wallet = await self.ton.get_jetton_wallet(Address(jetton_wallet_address))
         return jetton_wallet
 
         #  "EQBTaitfymnhdz6fMQaN5LvvpETOE6Mn-A9rcCSSJpZ-PD2T"
 
-    async def get_wallets(
-        self, owner_address: Address, include_symbols=None
-    ) -> List[JettonWallet]:
+    async def get_wallets(self, owner_address: Address, include_symbols=None) -> List[JettonWallet]:
         jettons, owner_wallets = await asyncio.gather(
-            (
-                JettonMaster.all()
-                if include_symbols is None
-                else JettonMaster.filter(symbol__in=include_symbols)
-            ),
+            (JettonMaster.all() if include_symbols is None else JettonMaster.filter(symbol__in=include_symbols)),
             JettonWallet.get_wallets(owner_address, include_symbols),
         )
 
@@ -45,13 +37,9 @@ class WalletController:
                 await w.delete()
             owner_wallets = []
             for j in jettons:
-                jetton_wallet_address = await self.ton.get_jetton_wallet_address(
-                    j.address, owner_address
-                )
+                jetton_wallet_address = await self.ton.get_jetton_wallet_address(j.address, owner_address)
                 if jetton_wallet_address:
-                    owner_wallet = await JettonWallet.new(
-                        owner_address, Address(jetton_wallet_address), j
-                    )
+                    owner_wallet = await JettonWallet.new(owner_address, Address(jetton_wallet_address), j)
                     owner_wallets.append(owner_wallet)
 
         # jetton_wallet = await self.ton.get_jetton_wallet(Address(jetton_wallet_address))
@@ -116,17 +104,13 @@ class WalletController:
 
     async def get_seqno(self, owner_address: Address):
         try:
-            return await self.ton.ton_client.tc_client.get_wallet_seqno(
-                owner_address.to_string()
-            )
+            return await self.ton.ton_client.tc_client.get_wallet_seqno(owner_address.to_string())
         except BaseException as e:
             logging.error(e)
 
     async def get_balance(self, owner_address: Address):
         try:
-            return await self.ton.ton_client.tc_client.get_balance(
-                owner_address.to_string()
-            )
+            return await self.ton.ton_client.tc_client.get_balance(owner_address.to_string())
         except BaseException as e:
             logging.error(e)
 
@@ -139,8 +123,7 @@ class WalletController:
                 or seqno != wallet.last_seqno
                 or (
                     wallet.transaction_expire_at is not None
-                    and wallet.transaction_expire_at
-                    > datetime.datetime.now(datetime.timezone.utc)
+                    and wallet.transaction_expire_at > datetime.datetime.now(datetime.timezone.utc)
                 )
             ):
                 balance = await self.get_balance(owner_address)
@@ -164,9 +147,7 @@ class WalletController:
         wallet = await Wallet.get_by_address(owner_address)
         if wallet is not None:
             return wallet
-        address_base64, address_raw, address_hash, mainnet = Wallet._address_setter(
-            owner_address
-        )
+        address_base64, address_raw, address_hash, mainnet = Wallet._address_setter(owner_address)
 
         return await Wallet.create(
             address_base64=address_base64,

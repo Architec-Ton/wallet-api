@@ -2,6 +2,7 @@ import logging
 import random
 import uuid
 from typing import List
+
 from faker import Faker
 
 from wallet.auth import get_user
@@ -9,7 +10,7 @@ from wallet.view.auth.user import UserOut
 
 fake = Faker()
 
-from fastapi import APIRouter, Query, Depends
+from fastapi import APIRouter, Depends, Query
 
 from wallet.view.game.games import GameCategoryOut
 

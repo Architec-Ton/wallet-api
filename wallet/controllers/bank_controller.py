@@ -1,15 +1,9 @@
-import base64
 import logging
 
-from ton.utils import read_address
-from tonsdk.boc import Cell
-from tonsdk.utils import Address, bytes_to_b64str
+from tonsdk.utils import Address
 
 from .ton.ton_client import TonClient
-from .ton_controller import TonController
 from .wallet_controller import WalletController
-from ..config import TON_CLIENT_API_URL
-from ..models import JettonMaster
 
 
 class BankController:
@@ -18,9 +12,7 @@ class BankController:
         self.client = TonClient()
 
     async def get_banks(self, address: Address):
-        bnks = await WalletController().get_assets(
-            address, only_active=False, include_symbols=["BNK"]
-        )
+        bnks = await WalletController().get_assets(address, only_active=False, include_symbols=["BNK"])
 
         if len(bnks) > 0 and bnks[0].amount is not None:
             return bnks[0].amount
@@ -54,9 +46,7 @@ class BankController:
         return 0
 
     async def get_arcs(self, address: Address):
-        arcs = await WalletController().get_assets(
-            address, only_active=False, include_symbols=["ARC"]
-        )
+        arcs = await WalletController().get_assets(address, only_active=False, include_symbols=["ARC"])
         logging.info(arcs)
         if len(arcs) > 0 and arcs[0].amount is not None:
             logging.info(f"amount: {arcs[0].amount}")

@@ -1,10 +1,7 @@
 import aiohttp
 from TonTools import TonCenterClient
 
-from wallet.config import (
-    TON_CLIENT_API_GET_URL,
-    TON_CLIENT_API_KEY,
-)
+from wallet.config import TON_CLIENT_API_GET_URL, TON_CLIENT_API_KEY
 
 
 class TonClient:

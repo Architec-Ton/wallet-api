@@ -1,6 +1,7 @@
 import random
 import uuid
 from typing import List
+
 from faker import Faker
 
 from wallet.auth import get_user

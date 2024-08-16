@@ -1,8 +1,9 @@
 from enum import Enum
+from uuid import UUID
+
+from pydantic import Field
 
 from ..base import ArchitectonBase
-from pydantic import Field
-from uuid import UUID
 
 
 class GameResourceType(str, Enum):

@@ -16,19 +16,11 @@ class JettonWallet(BaseTonAddress):
 
     jetton = fields.ForeignKeyField("models.JettonMaster", index=True)
 
-    wallet_address_raw = fields.CharField(
-        max_length=128, null=True, default=None, index=True
-    )
-    wallet_address_hash = fields.CharField(
-        max_length=128, null=True, default=None, index=True
-    )
-    wallet_address_base64: str = fields.CharField(
-        max_length=48, null=True, default=None, index=True
-    )
+    wallet_address_raw = fields.CharField(max_length=128, null=True, default=None, index=True)
+    wallet_address_hash = fields.CharField(max_length=128, null=True, default=None, index=True)
+    wallet_address_base64: str = fields.CharField(max_length=48, null=True, default=None, index=True)
 
-    balance = fields.DecimalField(
-        max_digits=49, decimal_places=9, null=True, default=None, index=True
-    )
+    balance = fields.DecimalField(max_digits=49, decimal_places=9, null=True, default=None, index=True)
     decimals = fields.IntField(default=None, index=True, null=True)
     symbol = fields.CharField(max_length=12, null=True, index=True)
     usd_ratio = fields.FloatField(default=0)
@@ -43,15 +35,11 @@ class JettonWallet(BaseTonAddress):
     modified_at = fields.DatetimeField(auto_now=True)
 
     @staticmethod
-    async def new(
-        owner_address: Address, wallet_address: Address, jetton: JettonMaster
-    ) -> "JettonWallet":
-        wallet_address_base64, wallet_address_raw, wallet_address_hash, _ = (
-            BaseTonAddress._address_setter(wallet_address)
+    async def new(owner_address: Address, wallet_address: Address, jetton: JettonMaster) -> "JettonWallet":
+        wallet_address_base64, wallet_address_raw, wallet_address_hash, _ = BaseTonAddress._address_setter(
+            wallet_address
         )
-        address_base64, address_raw, address_hash, mainnet = (
-            BaseTonAddress._address_setter(owner_address)
-        )
+        address_base64, address_raw, address_hash, mainnet = BaseTonAddress._address_setter(owner_address)
 
         return await JettonWallet.create(
             address_base64=address_base64,

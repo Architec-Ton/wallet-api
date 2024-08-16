@@ -3,8 +3,8 @@ import logging
 import random
 import uuid
 from typing import List
-from faker import Faker
 
+from faker import Faker
 from fastapi import APIRouter
 from tonsdk.utils import Address
 

@@ -1,10 +1,10 @@
-from typing import List, Dict
-
+from typing import Dict, List
 from uuid import UUID
 
-from ..base import ArchitectonBase
 from pydantic import Field, field_validator
+
 from ...models import Attachment
+from ..base import ArchitectonBase
 
 
 class AppMarketingCreateIn(ArchitectonBase):

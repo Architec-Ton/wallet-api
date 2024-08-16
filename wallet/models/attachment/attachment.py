@@ -2,14 +2,12 @@ import os
 from typing import Optional
 from uuid import UUID, uuid4
 
-from tortoise import fields, Model
-
-# from stretchcore.models.storage.attachment_connection import AttachmentConnection
-from .attachment_type import (
-    AttachmentFileType,
-)
+from tortoise import Model, fields
 
 from .attachment_connection import AttachmentConnection
+
+# from stretchcore.models.storage.attachment_connection import AttachmentConnection
+from .attachment_type import AttachmentFileType
 
 STORAGE_URL = os.getenv("STORAGE_URL", "/storage")
 STORAGE_PATH = os.getenv("STORAGE_PATH", "./storage")
@@ -22,9 +20,7 @@ class Attachment(Model):
         unique=True,
         default=uuid4,
     )
-    title: str = fields.CharField(
-        max_length=360, null=True, default=None, description="Title for file object"
-    )
+    title: str = fields.CharField(max_length=360, null=True, default=None, description="Title for file object")
     description: str = fields.CharField(max_length=1024, null=True, default=None)
     source: str = fields.CharField(max_length=16, default="local")
     filename: str = fields.CharField(max_length=256)
@@ -32,13 +28,9 @@ class Attachment(Model):
 
     filesize: int = fields.BigIntField(null=True, default=None)
     file_type = fields.CharEnumField(AttachmentFileType, max_length=16, index=True)
-    content_type: Optional[str] = fields.CharField(
-        max_length=32, default=None, null=True
-    )
+    content_type: Optional[str] = fields.CharField(max_length=32, default=None, null=True)
     entities: fields.ReverseRelation
-    duration = fields.IntField(
-        default=None, null=True, index=True, description="Duration in seconds"
-    )
+    duration = fields.IntField(default=None, null=True, index=True, description="Duration in seconds")
     status = fields.CharField(max_length=16, default="approved", index=True)
     created_at = fields.DatetimeField(auto_now_add=True)
     modified_at = fields.DatetimeField(auto_now=True)
@@ -60,9 +52,7 @@ class Attachment(Model):
         """
         return f"{STORAGE_URL}/storage/{self.file_type}/thumb/{self.filename}"
 
-    def filepath(
-        self, file_type: AttachmentFileType = AttachmentFileType.icon, is_exist=False
-    ) -> str | None:
+    def filepath(self, file_type: AttachmentFileType = AttachmentFileType.icon, is_exist=False) -> str | None:
         """
         Returns path
         """
@@ -100,9 +90,7 @@ class Attachment(Model):
     async def remove(self, entity_id: UUID | None = None):
         # Drop connection
         if entity_id is not None:
-            await AttachmentConnection.filter(
-                attachment_id=self.id, entity_id=entity_id
-            ).delete()
+            await AttachmentConnection.filter(attachment_id=self.id, entity_id=entity_id).delete()
         count = await AttachmentConnection.filter(attachment_id=self.id).count()
         # if count == 0:
         #     for file in AttachmentFileType:

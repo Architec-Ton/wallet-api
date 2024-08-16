@@ -2,16 +2,11 @@ import logging
 from typing import List
 from uuid import UUID
 
-from wallet.view.category.category import (
-    CategoryCreateIn,
-    CategoryDetailOut,
-    CategoryUpdateIn,
-)
-
 from fastapi import APIRouter
-from wallet.models.apps import AppCategory
-
 from slugify import slugify
+
+from wallet.models.apps import AppCategory
+from wallet.view.category.category import CategoryCreateIn, CategoryDetailOut, CategoryUpdateIn
 
 router = APIRouter()
 

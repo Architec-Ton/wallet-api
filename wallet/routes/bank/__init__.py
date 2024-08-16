@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from .bank import router as bank_router
 
+from .bank import router as bank_router
 
 router = APIRouter(tags=["Bank"])  # , dependencies=[Depends(get_user)])
 

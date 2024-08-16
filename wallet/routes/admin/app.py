@@ -1,27 +1,14 @@
 from typing import List
 from uuid import UUID
 
+from fastapi import APIRouter
 from fastapi.encoders import jsonable_encoder
+from slugify import slugify
 
 from wallet.models import AppCategory, AppResource
 from wallet.models.apps import App
-from wallet.view.app.app import (
-    AppCreateIn,
-    AppUpdateIn,
-    AppDetailOut,
-    AppsByCategoriesOut,
-)
-
-
-from fastapi import APIRouter
-
-from slugify import slugify
-
-from wallet.view.app.resource import (
-    AppResourceOut,
-    AppResourceCreateIn,
-    AppResourceUpdateIn,
-)
+from wallet.view.app.app import AppCreateIn, AppDetailOut, AppsByCategoriesOut, AppUpdateIn
+from wallet.view.app.resource import AppResourceCreateIn, AppResourceOut, AppResourceUpdateIn
 
 router = APIRouter()
 
@@ -125,9 +112,7 @@ async def post_create_resource(app_id: UUID, app_resource_in: AppResourceCreateI
 
 
 @router.put("/{app_id}/resource/{resource_id}", response_model=AppResourceOut)
-async def put_update_resource(
-    app_id: UUID, resource_id: UUID, app_resource_in: AppResourceUpdateIn
-):
+async def put_update_resource(app_id: UUID, resource_id: UUID, app_resource_in: AppResourceUpdateIn):
     app_resource = await AppResource.get(app_id=app_id, id=resource_id)
     app_data = app_resource_in.model_dump(exclude_unset=True, exclude_none=True)
     if "translation" in app_data:

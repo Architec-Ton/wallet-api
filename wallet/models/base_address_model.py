@@ -6,9 +6,7 @@ from tortoise.models import Model
 class BaseTonAddress(Model):
     address_raw = fields.CharField(max_length=128, null=True, default=None, index=True)
     address_hash = fields.CharField(max_length=128, null=True, default=None, index=True)
-    address_base64: str = fields.CharField(
-        max_length=48, null=True, default=None, index=True
-    )
+    address_base64: str = fields.CharField(max_length=48, null=True, default=None, index=True)
 
     mainnet = fields.BooleanField(default=True, index=True)
     network: str = fields.CharField(max_length=16, null=True, default="ton")
@@ -32,9 +30,7 @@ class BaseTonAddress(Model):
 
     @address.setter
     def address(self, value):
-        self.address_base64, self.address_raw, self.address_hash, self.mainnet = (
-            BaseTonAddress._address_setter(value)
-        )
+        self.address_base64, self.address_raw, self.address_hash, self.mainnet = BaseTonAddress._address_setter(value)
 
     @classmethod
     async def get_by_address(cls, owner_addres: Address):

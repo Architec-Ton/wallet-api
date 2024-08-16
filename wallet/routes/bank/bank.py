@@ -3,6 +3,7 @@ import logging
 import random
 import uuid
 from typing import List
+
 from faker import Faker
 from tonsdk.utils import Address
 
@@ -32,12 +33,8 @@ async def get_bank_assets(
     # owner_address = Address("0QCto-hxbOIBe_G6ub3s3_murlWrPBo__j8zI4Fka8PAMGBK")
 
     ton, bnk = await asyncio.gather(
-        WalletController().get_assets(
-            owner_address, only_active=True, include_symbols=["TON"]
-        ),
-        WalletController().get_assets(
-            owner_address, only_active=False, include_symbols=["BNK"]
-        ),
+        WalletController().get_assets(owner_address, only_active=True, include_symbols=["TON"]),
+        WalletController().get_assets(owner_address, only_active=False, include_symbols=["BNK"]),
     )
 
     logging.info(ton)
@@ -88,11 +85,7 @@ async def get_bank_info(
                         symbol="BNK",
                     )
                 )
-            if (
-                tx["type"] == "out"
-                and tx["address_to"] == MASTER_WALLET_BANK
-                and tx["value"] == 0.07
-            ):
+            if tx["type"] == "out" and tx["address_to"] == MASTER_WALLET_BANK and tx["value"] == 0.07:
                 btxs.append(
                     HistoryItemOut(
                         type="claim",

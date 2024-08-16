@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
-from .games import router as games_router
-from .game import router as game_router
 
+from .game import router as game_router
+from .games import router as games_router
 
 router = APIRouter(tags=["Games"])  # , dependencies=[Depends(get_user)])
 

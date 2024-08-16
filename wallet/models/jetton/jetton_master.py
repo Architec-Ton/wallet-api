@@ -1,4 +1,5 @@
 from tortoise import fields
+
 from wallet.models.base_address_model import BaseTonAddress
 
 
@@ -16,12 +17,8 @@ class JettonMaster(BaseTonAddress):
     url: str = fields.CharField(max_length=1028, null=True, default=None)
     symbol = fields.CharField(max_length=12, null=True, index=True)
     decimals = fields.IntField(default=9)
-    supply = fields.DecimalField(
-        max_digits=39, decimal_places=9, null=True, default=None
-    )
-    token_supply = fields.DecimalField(
-        max_digits=39, decimal_places=9, null=True, default=None
-    )
+    supply = fields.DecimalField(max_digits=39, decimal_places=9, null=True, default=None)
+    token_supply = fields.DecimalField(max_digits=39, decimal_places=9, null=True, default=None)
     primary = fields.BooleanField(default=True, index=True)
 
     created_at = fields.DatetimeField(auto_now_add=True)

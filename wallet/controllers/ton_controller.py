@@ -1,10 +1,10 @@
+import logging
+
 import aiohttp
-from TonTools.Providers.TonCenterClient import GetMethodError
 from tonsdk.utils import Address
+from TonTools.Providers.TonCenterClient import GetMethodError
 
 from .ton.ton_client import TonClient
-
-import logging
 
 client = TonClient()
 
@@ -21,9 +21,7 @@ class TonController:
         except BaseException as error:
             logging.exception(error)
 
-    async def get_jetton_wallet_address(
-        self, master_address: Address, address: Address
-    ):
+    async def get_jetton_wallet_address(self, master_address: Address, address: Address):
         address = await self.ton_client.tc_client.get_jetton_wallet_address(
             master_address.to_string(), address.to_string()
         )
@@ -31,25 +29,17 @@ class TonController:
 
     async def get_jetton_wallet(self, address: Address):
         try:
-            jetton_wallet = await self.ton_client.tc_client.get_jetton_wallet(
-                address.to_string()
-            )
+            jetton_wallet = await self.ton_client.tc_client.get_jetton_wallet(address.to_string())
             return jetton_wallet
         except GetMethodError as e:
-            logging.error(
-                f"Error getting jetton wallet data for address {address=}: {e=}"
-            )
+            logging.error(f"Error getting jetton wallet data for address {address=}: {e=}")
             return None
         except Exception as e:
-            logging.error(
-                f"Error getting jetton wallet data for address {address=}: {e=}"
-            )
+            logging.error(f"Error getting jetton wallet data for address {address=}: {e=}")
             return None
 
     async def get_jetton_data(self, master_address: Address):
-        return await self.ton_client.tc_client.get_jetton_data(
-            master_address.to_string()
-        )
+        return await self.ton_client.tc_client.get_jetton_data(master_address.to_string())
 
     async def get_transactions(self, address: Address, limit: int = 3):
         try:
