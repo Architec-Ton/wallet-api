@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import uuid
 
@@ -24,13 +25,14 @@ async def post_auth(init_data: AuthIn):
         "iss": uuid.uuid4().hex,
     }
 
-    account = await AccountController.get_or_create(init_data)
-    if init_data.init_ton and init_data.init_ton.address:
-        wallet = await WalletController.get_or_create(Address(init_data.init_ton.address))
-        if wallet and account:
-            _ = await AccountController.get_or_create_wallet_connection(account, wallet)
-
-    logging.info(f"Account: {account}")
+    async def bg_update_account(init_data):
+        account = await AccountController.get_or_create(init_data)
+        if init_data.init_ton and init_data.init_ton.address:
+            wallet = await WalletController.get_or_create(Address(init_data.init_ton.address))
+            if wallet and account:
+                _ = await AccountController.get_or_create_wallet_connection(account, wallet)
+                _ = await WalletController.update_from_network(wallet)
+        logging.info(f"Account: {account}")
 
     if init_data.init_ton:
         payload["address"] = init_data.init_ton.address
@@ -44,5 +46,7 @@ async def post_auth(init_data: AuthIn):
     access_token = create_token(payload)
     # s = telegram_validate(init_data)
     # logging.info(f"Validate: \n{s}")
+
+    asyncio.ensure_future(bg_update_account(init_data))
 
     return AuthOut(access_token=access_token)

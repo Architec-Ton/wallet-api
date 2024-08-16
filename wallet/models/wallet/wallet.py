@@ -11,9 +11,13 @@ class Wallet(BaseTonAddress):
     id = fields.UUIDField(pk=True)
 
     type = fields.CharField(max_length=8, null=True, default="v4r")
-
+    workchain = fields.BigIntField(default=0, index=True, null=True)
     balance = fields.DecimalField(max_digits=49, decimal_places=9, null=True, default=None, index=True)
     last_seqno = fields.BigIntField(default=None, index=True, null=True)
+    last_lt = fields.BigIntField(default=None, index=True, null=True)
+    last_sync = fields.BigIntField(default=None, index=True, null=True)
+    last_block_seqno = fields.BigIntField(default=None, index=True, null=True)
+    last_transaction = fields.CharField(default=None, index=True, null=True, max_length=128)
     transaction = fields.BooleanField(default=True, index=True, null=True)
     transaction_expire_at = fields.DatetimeField(default=None, null=True)
 
@@ -23,5 +27,7 @@ class Wallet(BaseTonAddress):
     change_ratio = fields.FloatField(default=0)
     active = fields.BooleanField(default=False, index=True)
     wallet_code = fields.TextField(default=None, null=True)
+    info = fields.JSONField(default=None, null=True)
+    payload = fields.JSONField(default=None, null=True)
     created_at = fields.DatetimeField(auto_now_add=True)
     modified_at = fields.DatetimeField(auto_now=True)

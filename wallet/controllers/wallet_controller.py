@@ -5,6 +5,7 @@ from typing import List, Optional
 
 from tonsdk.utils import Address
 
+from ..config import TON_CLIENT_NETWORK
 from ..models import JettonMaster, JettonWallet, Wallet
 from ..view.wallet.coin import CoinOut
 from .ton_controller import TonController
@@ -151,6 +152,32 @@ class WalletController:
             address_raw=address_raw,
             address_hash=address_hash,
             decimals=9,
-            mainnet=False,  # not owner_address.is_test_only,
+            mainnet=TON_CLIENT_NETWORK == "mainnet",  # not owner_address.is_test_only,
             symbol="TON",
         )
+
+    @staticmethod
+    async def update_from_network(wallet: Wallet | None) -> Wallet | None:
+        if wallet:
+            wallet_info = await TonController().get_wallet_info(wallet.address)
+            if wallet_info:
+                wallet.info = wallet_info
+                try:
+                    if "balance" in wallet_info:
+                        wallet.balance = int(wallet_info["balance"]) / 10**9
+                    if "code" in wallet_info:
+                        wallet.wallet_code = wallet_info["code"]
+                    if "last_transaction_id" in wallet_info:
+                        wallet.last_lt = int(wallet_info["last_transaction_id"]["lt"])
+                        wallet.last_transaction = wallet_info["last_transaction_id"]["hash"]
+                    if "block_id" in wallet_info:
+                        wallet.last_block_seqno = int(wallet_info["block_id"]["seqno"])
+                    if "sync_utime" in wallet_info:
+                        wallet.last_sync = int(wallet_info["sync_utime"])
+                    if "state" in wallet_info and wallet_info["state"] == "active":
+                        wallet.active = True
+
+                    await wallet.save()
+                except Exception as e:
+                    logging.error(f"PArse error: {e}")
+            return wallet

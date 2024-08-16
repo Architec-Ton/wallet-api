@@ -51,3 +51,14 @@ class TonController:
 
         trx = [t.to_dict_user_friendly() for t in transactions]
         return trx
+
+    async def get_wallet_info(self, address: Address):
+        try:
+            wallet_info = await self.ton_client.get_by_api(
+                "getAddressInformation", {"address": address.to_string(is_user_friendly=True)}
+            )
+        except BaseException as e:
+            logging.exception(e)
+            return []
+
+        return wallet_info
