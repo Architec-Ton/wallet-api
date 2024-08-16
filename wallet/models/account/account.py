@@ -15,6 +15,7 @@ class Account(Model):
     language_code = fields.CharField(max_length=128, null=True, default=None)
 
     is_premium = fields.BooleanField(default=False, index=True)
+    is_bot = fields.BooleanField(default=False, index=True)
     added_to_attachment_menu = fields.BooleanField(default=False, index=True)
     allows_write_to_pm = fields.BooleanField(default=False, index=True)
     receiver_id = fields.BigIntField(index=True, null=True)

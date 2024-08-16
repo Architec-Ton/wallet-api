@@ -10,9 +10,11 @@ class UserIn(ArchitectonBase):
     first_name: str
     id: int | None = Field(default=None)
     is_premium: bool | None = Field(default=None)
+    is_bot: bool | None = Field(default=None)
     language_code: str | None = Field(default=None)
     last_name: str | None = Field(default=None)
     username: str | None = Field(default=None)
+    photo_url: str | None = Field(default=None)
 
 
 class UserOut(ArchitectonBase):
