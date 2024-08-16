@@ -7,6 +7,7 @@ from tonsdk.utils import Address
 
 from ..config import TON_CLIENT_NETWORK
 from ..models import JettonMaster, JettonWallet, Wallet
+from ..models.wallet.wallet_code import WalletCode
 from ..view.wallet.coin import CoinOut
 from .ton_controller import TonController
 
@@ -167,6 +168,10 @@ class WalletController:
                         wallet.balance = int(wallet_info["balance"]) / 10**9
                     if "code" in wallet_info:
                         wallet.wallet_code = wallet_info["code"]
+                        if wallet.wallet_code == WalletCode.v4r.value:
+                            wallet.type = "v4r"
+                        else:
+                            wallet.type = "unknown"
                     if "last_transaction_id" in wallet_info:
                         wallet.last_lt = int(wallet_info["last_transaction_id"]["lt"])
                         wallet.last_transaction = wallet_info["last_transaction_id"]["hash"]
