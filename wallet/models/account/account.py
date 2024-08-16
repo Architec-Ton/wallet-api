@@ -14,8 +14,8 @@ class Account(Model):
     photo_url = fields.CharField(max_length=512, null=True, default=None)
     language_code = fields.CharField(max_length=128, null=True, default=None)
 
-    is_premium = fields.BooleanField(default=False, index=True)
-    is_bot = fields.BooleanField(default=False, index=True)
+    is_premium = fields.BooleanField(default=False, index=True, null=True)
+    is_bot = fields.BooleanField(default=False, index=True, null=True)
     added_to_attachment_menu = fields.BooleanField(default=False, index=True)
     allows_write_to_pm = fields.BooleanField(default=False, index=True)
     receiver_id = fields.BigIntField(index=True, null=True)
