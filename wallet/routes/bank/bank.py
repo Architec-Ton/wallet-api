@@ -1,10 +1,7 @@
 import asyncio
 import logging
-import random
-import uuid
-from typing import List
 
-from faker import Faker
+from fastapi import APIRouter, Depends
 from tonsdk.utils import Address
 
 from wallet.auth import get_user
@@ -13,14 +10,8 @@ from wallet.controllers.bank_controller import BankController
 from wallet.controllers.transaction_controller import TransactionController
 from wallet.controllers.wallet_controller import WalletController
 from wallet.view.auth.user import UserOut
-from wallet.view.bank.BankBuyInfo import BankBuyInfo
 from wallet.view.bank.BankInfo import BankInfo
-from wallet.view.game.game import GameOut
 from wallet.view.transaction.history import HistoryItemOut
-
-fake = Faker()
-
-from fastapi import APIRouter, Depends
 
 router = APIRouter()
 

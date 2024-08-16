@@ -1,9 +1,8 @@
 from uuid import UUID
 
-from pydantic import Field, field_validator
-from tonsdk.utils import Address
+from pydantic import Field
 
-from ..base import ArchitectonBase, BaseModel
+from ..base import ArchitectonBase
 
 
 class UserIn(ArchitectonBase):

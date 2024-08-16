@@ -2,10 +2,7 @@ import logging
 
 from tonsdk.utils import Address
 
-from ..config import TON_CLIENT_API_URL
-from ..view.transaction.history import HistoryItemOut
 from .ton.ton_client import TonClient
-from .ton_controller import TonController
 
 
 class TransactionController:

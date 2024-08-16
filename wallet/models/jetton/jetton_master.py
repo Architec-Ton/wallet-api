@@ -25,7 +25,8 @@ class JettonMaster(BaseTonAddress):
     modified_at = fields.DatetimeField(auto_now=True)
 
 
-# Jetton({"supply": 80000000000000000, "address": "EQDnRHbK5vJBLQyAnS6V8XNoRerCebnn9A2FlVlHtFVLFGZ-", "decimals": 6, "symbol": "USDT", "name": "USD Tether", "description": "Testnet USDT Jetto
+# Jetton({"supply": 80000000000000000, "address": "EQDnRHbK5vJBLQyAnS6V8XNoRerCebnn9A2FlVlHtFVLFGZ-",
+# "decimals": 6, "symbol": "USDT", "name": "USD Tether", "description": "Testnet USDT Jetto
 # n", "image": "https://cryptologos.cc/logos/tether-usdt-logo.png?v=025", "token_supply": 80000000000.0})
 
 

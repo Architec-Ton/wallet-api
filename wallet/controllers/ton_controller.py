@@ -1,6 +1,5 @@
 import logging
 
-import aiohttp
 from tonsdk.utils import Address
 from TonTools.Providers.TonCenterClient import GetMethodError
 

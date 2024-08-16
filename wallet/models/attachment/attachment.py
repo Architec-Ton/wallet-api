@@ -91,7 +91,7 @@ class Attachment(Model):
         # Drop connection
         if entity_id is not None:
             await AttachmentConnection.filter(attachment_id=self.id, entity_id=entity_id).delete()
-        count = await AttachmentConnection.filter(attachment_id=self.id).count()
+        count = await AttachmentConnection.filter(attachment_id=self.id).count()  # noqa
         # if count == 0:
         #     for file in AttachmentFileType:
         #         filepath = self.filepath(file, is_exist=True)
