@@ -5,6 +5,7 @@ from fastapi import APIRouter
 
 from wallet.auth.token import create_token
 from wallet.config import TON_CLIENT_NETWORK
+from wallet.controllers.account_controller import AccountController
 from wallet.view.auth.auth import AuthIn, AuthOut
 
 router = APIRouter(tags=["Auth"])
@@ -20,6 +21,10 @@ async def post_auth(init_data: AuthIn):
     payload = {
         "iss": uuid.uuid4().hex,
     }
+
+    account = await AccountController.get_or_create(init_data)
+
+    logging.info(f"Account: {account}")
 
     if init_data.init_ton:
         payload["address"] = init_data.init_ton.address
