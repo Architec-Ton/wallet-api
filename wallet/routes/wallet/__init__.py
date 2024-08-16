@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 
 from .assets import router as assets_router
 from .history import router as history_router

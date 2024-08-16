@@ -1,8 +1,5 @@
-from tonsdk.utils import Address
 from tortoise import fields
-from tortoise.expressions import Q
 
-from wallet.models import JettonMaster
 from wallet.models.base_address_model import BaseTonAddress
 
 

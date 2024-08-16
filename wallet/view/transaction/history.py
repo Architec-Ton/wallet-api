@@ -1,11 +1,8 @@
 from enum import Enum
-from uuid import UUID
 
-from pydantic import Field, field_validator
-from tonsdk.utils import Address
+from pydantic import Field
 
-from ..base import ArchitectonBase, BaseModel
-from ..wallet.coin import CoinType
+from ..base import ArchitectonBase
 
 
 class HistoryItemType(str, Enum):

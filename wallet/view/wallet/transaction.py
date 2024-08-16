@@ -1,10 +1,8 @@
-from enum import Enum
-from typing import List, Union
-from uuid import UUID
+from typing import List
 
 from pydantic import Field
 
-from ..base import ArchitectonBase, BaseModel
+from ..base import ArchitectonBase
 from .coin import CoinOut
 
 

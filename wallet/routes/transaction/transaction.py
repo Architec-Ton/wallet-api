@@ -21,7 +21,7 @@ router = APIRouter()
 async def get_transaction(
     user: UserOut = Depends(get_user),
 ):
-    address = user.address  #  "EQB1VVAKYHxXrg-zlLH0V3xRuhobNrPOZUHz24ghzUDhZsNL"
+    address = user.address  # "EQB1VVAKYHxXrg-zlLH0V3xRuhobNrPOZUHz24ghzUDhZsNL"
 
     return await TransactionController().get_transactions(Address(address))
 

@@ -1,7 +1,6 @@
 from uuid import uuid4
 
 from tortoise import fields
-from tortoise.models import Model
 
 from wallet.models.attachment.attachment_mixin import AttachmentMixin
 

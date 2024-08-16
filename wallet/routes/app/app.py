@@ -1,17 +1,14 @@
 import asyncio
 import logging
-import random
 import uuid
-from typing import List
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends
 from tortoise.queryset import Q
 
 from wallet.auth import get_user
 from wallet.models import App, AppCategory, AppMarketing
-from wallet.view.app.app import AppDetailOut, AppsCategoriesOut, AppsFilterIn, AppsOut
+from wallet.view.app.app import AppDetailOut, AppsFilterIn, AppsOut
 from wallet.view.auth.user import UserOut
-from wallet.view.game.games import GameCategoryOut
 
 router = APIRouter()
 

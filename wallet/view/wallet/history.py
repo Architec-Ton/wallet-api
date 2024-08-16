@@ -1,9 +1,6 @@
-from enum import Enum
-from typing import List, Union
-
 from pydantic import Field
 
-from ..base import ArchitectonBase, BaseModel
+from ..base import ArchitectonBase
 
 
 class TransactionsHistory(ArchitectonBase):

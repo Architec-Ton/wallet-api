@@ -1,6 +1,6 @@
-from pydantic import Field, field_validator
+from pydantic import Field
 
-from ..base import ArchitectonBase, BaseModel
+from ..base import ArchitectonBase
 
 
 class TransactionMsgDataOut(ArchitectonBase):
