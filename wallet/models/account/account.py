@@ -3,7 +3,6 @@ from tortoise.models import Model
 
 
 class Account(Model):
-
     class Meta:
         table = "account"
 

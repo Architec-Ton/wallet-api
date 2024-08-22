@@ -59,7 +59,6 @@ class JWTBearer(HTTPBearer):
 
 
 def get_user(token_data=Depends(JWTBearer())) -> UserOut:
-
     user = UserOut.model_validate(
         {
             "name": token_data["name"] if "name" in token_data else None,
@@ -75,7 +74,6 @@ def get_user(token_data=Depends(JWTBearer())) -> UserOut:
 
 
 def telegram_validate(init_data: AuthIn):
-
     data_check_string = (
         f"auth_date={init_data.init_data_raw.auth_date}\n"
         f"query_id={init_data.init_data_raw.query_id}\n"

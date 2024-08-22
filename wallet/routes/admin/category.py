@@ -12,7 +12,6 @@ router = APIRouter()
 
 @router.post("y", response_model=CategoryDetailOut)
 async def post_create_app_category(category_in: CategoryCreateIn):
-
     category_data = {
         "title_en": category_in.title_en,
         "payload": {"translation": category_in.translation},
