@@ -7,7 +7,6 @@ from wallet.models.base_address_model import BaseTonAddress
 
 
 class JettonWallet(BaseTonAddress):
-
     class Meta:
         table = "jetton_wallet"
         unique_together = ("address_base64", "mainnet", "jetton")

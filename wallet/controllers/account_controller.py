@@ -4,7 +4,6 @@ from ..view.auth.auth import AuthIn
 
 
 class AccountController:
-
     @staticmethod
     async def get_or_create(auth_in: AuthIn):
         if auth_in.init_data_raw and auth_in.init_data_raw.user and auth_in.init_data_raw.user.id:

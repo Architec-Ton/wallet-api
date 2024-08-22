@@ -16,34 +16,26 @@ router = APIRouter()
 @router.get("s", response_model=AppsOut)
 async def get_apps(
     filter_in: AppsFilterIn = Depends(AppsFilterIn),
-    user: UserOut = Depends(get_user),
+    # user: UserOut = Depends(get_user),
 ):
-    if filter_in.search is None and filter_in.category_id is None:
-        logging.info(f"u2: {user}")
-        categories_with_apps, marketings = await asyncio.gather(
-            AppCategory.filter(active=True).order_by("order").prefetch_related("apps", "apps__icon"),
-            AppMarketing.all().order_by("order").prefetch_related("image"),
-        )
-    else:
-        marketings = []
-        query = Q()
-        if filter_in.category_id is not None:
-            query = Q(id=filter_in.category_id, active=True)
-        if filter_in.search is not None:
-            query = query & Q(apps__title_en__icontains=filter_in.search)
-        categories_with_apps = await AppCategory.filter(query).order_by("order").prefetch_related("apps", "apps__icon")
-        # r = AppsOut(categories=categories_with_apps, marketings=marketings).model_dump()
-        # if filter_in.search is not None:
-        #     s = filter_in.search.lower().strip()
-        #     for c in r["categories"]:
-        #         apps = []
-        #         for a in c["apps"]:
-        #             if s in a["title"].lower():
-        #                 apps.append(a)
-        #         c["apps"] = apps
-        # await categories_with_apps.fetch_related("apps", "apps__icon")
-        # logging.info(categories_with_apps)
-        # return r
+    query = Q(active=True)
+    if filter_in.category_id is not None:
+        query = Q(category_id=filter_in.category_id, active=True)
+    if filter_in.search is not None:
+        query = query & Q(title_en__icontains=filter_in.search)
+
+        # logging.info(f"u2: {user}")
+    categories_obj, marketings, apps = await asyncio.gather(
+        AppCategory.filter(active=True).order_by("order"),
+        AppMarketing.all().order_by("order").prefetch_related("image"),
+        App.filter(query).order_by("-is_partner", "order").prefetch_related("icon"),
+    )
+    categories_dict = {c.id: {"title": c.title, "id": c.id, "apps": []} for c in categories_obj}
+
+    for a in apps:
+        categories_dict[a.category_id]["apps"].append(a)
+
+    categories_with_apps = categories_dict.values()
 
     return AppsOut(categories=categories_with_apps, marketings=marketings)
 

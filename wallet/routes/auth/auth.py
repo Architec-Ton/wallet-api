@@ -16,7 +16,6 @@ router = APIRouter(tags=["Auth"])
 
 @router.post("", response_model=AuthOut)
 async def post_auth(init_data: AuthIn):
-
     # TODO: Check hash
     # TODO: Check signature
     logging.info(init_data)

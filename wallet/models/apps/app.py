@@ -6,7 +6,6 @@ from wallet.models.attachment.attachment_mixin import AttachmentMixin
 
 
 class App(AttachmentMixin):
-
     entity: str = "app"
 
     class Meta:

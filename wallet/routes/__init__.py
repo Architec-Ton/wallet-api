@@ -20,4 +20,4 @@ router.include_router(app_router, prefix="")
 router.include_router(bank_router, prefix="")
 router.include_router(health_router, prefix="/health")
 
-router.include_router(admin_router, prefix="/admin", dependencies=[Depends(api_admin_key_auth)])
+router.include_router(admin_router, prefix="/admin")  # , dependencies=[Depends(api_admin_key_auth)])

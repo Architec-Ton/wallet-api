@@ -5,7 +5,6 @@ from wallet.config import TON_CLIENT_API_KEY, TON_CLIENT_API_URL, TON_CLIENT_API
 
 
 class TonClient:
-
     def __init__(self):
         self.tc_client = TonCenterClient(
             # base_url=f"{TON_CLIENT_API_GET_URL}/",
