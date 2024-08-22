@@ -25,6 +25,7 @@ async def post_create_app(app_in: AppCreateIn):
             "icon_id": app_in.icon_id,
             "category_id": app_in.category_id,
             "slug": slugify(app_in.title_en),
+            "is_partner": app_in.is_partner,
         }
     )
     app = await App.create(**app_data)
