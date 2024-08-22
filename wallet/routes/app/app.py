@@ -35,7 +35,7 @@ async def get_apps(
     for a in apps:
         categories_dict[a.category_id]["apps"].append(a)
 
-    categories_with_apps = [c for c categories_dict.values() if len(c['apps'] > 0) ]
+    categories_with_apps = [c for c in categories_dict.values() if len(c['apps']) > 0 ]
 
     return AppsOut(categories=categories_with_apps, marketings=marketings)
 
