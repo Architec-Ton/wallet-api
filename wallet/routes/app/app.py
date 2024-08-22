@@ -16,7 +16,7 @@ router = APIRouter()
 @router.get("s", response_model=AppsOut)
 async def get_apps(
     filter_in: AppsFilterIn = Depends(AppsFilterIn),
-    # user: UserOut = Depends(get_user),
+    user: UserOut = Depends(get_user),
 ):
     query = Q(active=True)
     if filter_in.category_id is not None:
@@ -24,7 +24,7 @@ async def get_apps(
     if filter_in.search is not None:
         query = query & Q(title_en__icontains=filter_in.search)
 
-        # logging.info(f"u2: {user}")
+    logging.info(f"u2: {user}")
     categories_obj, marketings, apps = await asyncio.gather(
         AppCategory.filter(active=True).order_by("order"),
         AppMarketing.all().order_by("order").prefetch_related("image"),
