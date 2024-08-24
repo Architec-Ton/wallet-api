@@ -6,6 +6,7 @@ from tonsdk.utils import Address
 from wallet.config import TON_CLIENT_NETWORK
 from wallet.controllers.ton_controller import TonController
 from wallet.models import JettonMaster
+from wallet.view.jetton.jetton import AdminAddJettonIn
 
 router = APIRouter()
 
@@ -16,6 +17,25 @@ async def create_jetton_master(address: str):
     jetton.mainnet = False  # Dev only for testnet
     await jetton.save()
     return jetton
+
+
+@router.post("/create")
+async def post_create_jettons(
+    jetton_in: AdminAddJettonIn
+):
+    jt = await create_jetton_master(jetton_in.address)
+    jetton_data = await TonController().get_jetton_data(Address(jetton_in.address))
+    jt.decimals = jetton_data.decimals
+    jt.symbol = jetton_data.symbol
+    jt.name = jetton_data.name
+    jt.description = jetton_data.description
+    jt.supply = jetton_data.supply
+    jt.token_supply = jetton_data.token_supply
+    jt.image = jetton_data.image
+    jt.address_base64 = jetton_data.address
+    await jt.save()
+
+    return jt
 
 
 @router.post("/import")
