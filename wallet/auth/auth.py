@@ -13,6 +13,10 @@ from wallet.errors import APIException
 from wallet.view.auth.auth import AuthIn
 from wallet.view.auth.user import UserOut
 
+import hmac
+import hashlib
+from urllib.parse import unquote
+
 ALGORITHM = os.getenv("WALLET_API_ALGORITHM", "RS256")
 
 
@@ -74,7 +78,44 @@ def get_user(token_data=Depends(JWTBearer())) -> UserOut:
     return user
 
 
-def telegram_validate(init_data: AuthIn):
+
+# def validate(hash_str, init_data, token, c_str="WebAppData"):
+#     """
+#     Validates the data received from the Telegram web app, using the
+#     method documented here:
+#     https://core.telegram.org/bots/webapps#validating-data-received-via-the-web-app
+#     hash_str - the has string passed by the webapp
+#     init_data - the query string passed by the webapp
+#     token - Telegram bot's token
+#     c_str - constant string (default = "WebAppData")
+#     """
+#     init_data = sorted([ chunk.split("=")
+#           for chunk in unquote(init_data).split("&")
+#             if chunk[:len("hash=")]!="hash="],
+#         key=lambda x: x[0])
+#     init_data = "\n".join([f"{rec[0]}={rec[1]}" for rec in init_data])
+#     secret_key = hmac.new(c_str.encode(), token.encode(),
+#         hashlib.sha256 ).digest()
+#     data_check = hmac.new( secret_key, init_data.encode(),
+#         hashlib.sha256)
+#     return data_check.hexdigest() == hash_str
+
+def telegram_validate(hash_str, init_data: AuthIn, token):
+    init_data_raw = init_data.init_data_raw.model_dump(exclude_unset=True)
+    logging.info(init_data_raw)
+    init_data_sorted = dict(sorted(init_data_raw.items()))
+
+    logging.info(f"sortted: {init_data_sorted}")
+
+    init_data_sorted = "\n".join([f"{k}={v}" for k, v in init_data_sorted.items()])
+    # secret_key = hmac.new(c_str.encode(), token.encode(),
+    #                       hashlib.sha256 ).digest()
+    logging.info(f"sortted2: {init_data_sorted}")
+    secret_key = token.encode()
+    data_check = hmac.new( secret_key, init_data_sorted.encode(),
+                           hashlib.sha256)
+    logging.info(f"data_check.hexdigest(): {data_check.hexdigest()}")
+    return data_check.hexdigest() == hash_str
 
     data_check_string = (
         f"auth_date={init_data.init_data_raw.auth_date}\n"
