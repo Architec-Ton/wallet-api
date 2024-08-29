@@ -55,6 +55,6 @@ async def post_auth(init_data: AuthIn):
 
     logging.info(f"Validate: \n{init_data_raw}")
 
-    asyncio.ensure_future(bg_update_account(init_data))
+    asyncio.ensure_future(bg_update_account(init_data, init_data_raw))
 
     return AuthOut(access_token=access_token)
