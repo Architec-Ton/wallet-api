@@ -11,7 +11,7 @@ from wallet.config import TON_CLIENT_NETWORK
 from wallet.controllers.account_controller import AccountController
 from wallet.controllers.wallet_controller import WalletController
 from wallet.errors import APIException
-from wallet.view.auth.auth import AuthIn, AuthOut
+from wallet.view.auth.auth import AuthIn, AuthOut, InitDataIn
 
 router = APIRouter(tags=["Auth"])
 
@@ -26,8 +26,8 @@ async def post_auth(init_data: AuthIn):
         "iss": uuid.uuid4().hex,
     }
 
-    async def bg_update_account(init_data):
-        account = await AccountController.get_or_create(init_data)
+    async def bg_update_account(init_data, init_data_raw : InitDataIn):
+        account = await AccountController.get_or_create(init_data, init_data_raw)
         if init_data.init_ton and init_data.init_ton.address:
             wallet = await WalletController.get_or_create(Address(init_data.init_ton.address))
             if wallet and account:
