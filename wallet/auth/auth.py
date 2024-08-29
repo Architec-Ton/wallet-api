@@ -95,5 +95,5 @@ def validate_telegram_init_data(init_data : AuthIn) -> InitDataIn | None:
     if not is_valid:
         return None
 
-     return InitDataIn.model_validate(init_data_parsed_dict)
+    return InitDataIn.model_validate(init_data_parsed_dict)
 
