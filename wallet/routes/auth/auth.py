@@ -27,7 +27,7 @@ async def post_auth(init_data: AuthIn):
     }
 
     async def bg_update_account(init_data, init_data_raw : InitDataIn):
-        account = await AccountController.get_or_create(init_data, init_data_raw)
+        account = await AccountController.get_or_create(init_data_raw)
         if init_data.init_ton and init_data.init_ton.address:
             wallet = await WalletController.get_or_create(Address(init_data.init_ton.address))
             if wallet and account:
