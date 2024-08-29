@@ -39,7 +39,7 @@ async def post_auth(init_data: AuthIn):
         payload["address"] = init_data.init_ton.address
         payload["net"] = TON_CLIENT_NETWORK
 
-    access_token = create_token(payload)
+
     # s = telegram_validate(init_data)
     # logging.info(f"Validate: \n{s}")
     init_data_raw = validate_telegram_init_data(init_data)
@@ -52,6 +52,7 @@ async def post_auth(init_data: AuthIn):
         payload["lang"] = init_data_raw.user.language_code
         payload["sub"] = str(init_data_raw.user.id)
 
+    access_token = create_token(payload)
 
     logging.info(f"Validate: \n{init_data_raw}")
 
