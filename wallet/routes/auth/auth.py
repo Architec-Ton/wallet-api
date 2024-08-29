@@ -5,10 +5,12 @@ import uuid
 from fastapi import APIRouter
 from tonsdk.utils import Address
 
+from wallet.auth.auth import validate_telegram_init_data
 from wallet.auth.token import create_token
 from wallet.config import TON_CLIENT_NETWORK
 from wallet.controllers.account_controller import AccountController
 from wallet.controllers.wallet_controller import WalletController
+from wallet.errors import APIException
 from wallet.view.auth.auth import AuthIn, AuthOut
 
 router = APIRouter(tags=["Auth"])
@@ -38,14 +40,21 @@ async def post_auth(init_data: AuthIn):
         payload["address"] = init_data.init_ton.address
         payload["net"] = TON_CLIENT_NETWORK
 
-    if init_data.init_data_raw:
-        payload["name"] = init_data.init_data_raw.user.username
-        payload["lang"] = init_data.init_data_raw.user.language_code
-        payload["sub"] = str(init_data.init_data_raw.user.id)
-
     access_token = create_token(payload)
     # s = telegram_validate(init_data)
     # logging.info(f"Validate: \n{s}")
+    init_data_raw = validate_telegram_init_data(init_data)
+
+    if init_data_raw is None:
+        raise APIException("Wrong credentials", 401)
+
+    if init_data_raw:
+        payload["name"] = init_data_raw.user.username
+        payload["lang"] = init_data_raw.user.language_code
+        payload["sub"] = str(init_data_raw.user.id)
+
+
+    logging.info(f"Validate: \n{init_data_raw}")
 
     asyncio.ensure_future(bg_update_account(init_data))
 
