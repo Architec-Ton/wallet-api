@@ -18,7 +18,7 @@ class InitTonIn(ArchitectonBase):
 
 
 class AuthIn(ArchitectonBase):
-    init_data_raw: InitDataIn | None = Field(default=None)
+    init_data_raw: InitDataIn | str | None = Field(default=None)
     init_ton: InitTonIn | None = Field(default=None)
     auth_type: str = Field(default="telegram")
 

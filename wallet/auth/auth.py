@@ -1,5 +1,4 @@
-import hashlib
-import hmac
+import json
 import logging
 import os
 
@@ -10,8 +9,13 @@ from jose import jwt
 
 from wallet.config import ADMIN_AUTH_KEY
 from wallet.errors import APIException
-from wallet.view.auth.auth import AuthIn
+from wallet.view.auth.auth import AuthIn, InitDataIn
 from wallet.view.auth.user import UserOut
+
+
+import hashlib
+import hmac
+from urllib.parse import urlencode, parse_qsl
 
 ALGORITHM = os.getenv("WALLET_API_ALGORITHM", "RS256")
 
@@ -73,14 +77,23 @@ def get_user(token_data=Depends(JWTBearer())) -> UserOut:
     return user
 
 
-def telegram_validate(init_data: AuthIn):
-    data_check_string = (
-        f"auth_date={init_data.init_data_raw.auth_date}\n"
-        f"query_id={init_data.init_data_raw.query_id}\n"
-        f"user={init_data.init_data_raw.user.username}"
-        # f"user={ ''.join([ f"{k}={v}"for k, v in init_data.init_data_raw.user.items()])}\n"
-    )
+def validate_telegram_init_data(init_data : AuthIn) -> InitDataIn | None:
+    init_data_dict = dict(parse_qsl(init_data.init_data_raw, keep_blank_values=True))
+    init_data_parsed_dict = { key: json.loads(value) if key=='user' else value for key, value in init_data_dict.items()}
+    init_data_hash = init_data_dict.pop('hash', None)
+    if not init_data_hash:
+        return None
 
-    signature = hmac.new(str("").encode(), msg=data_check_string.encode(), digestmod=hashlib.sha256).hexdigest()
+    bot_token = os.getenv("BOT_SECRET_KEY")
+    data_check_array = [f"{key}={value}" for key, value in init_data_dict.items()]
+    data_check_array.sort()
+    secret_key = hmac.new(b'WebAppData', bot_token.encode('utf-8'), hashlib.sha256).digest()
+    data_string = '\n'.join(data_check_array).encode('utf-8')
+    calculated_hash = hmac.new(secret_key, data_string, hashlib.sha256).hexdigest()
+    is_valid =  hmac.compare_digest(calculated_hash, init_data_hash)
 
-    return signature
+    if not is_valid:
+        return None
+
+    return InitDataIn.model_validate(init_data_parsed_dict)
+
