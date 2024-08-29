@@ -15,5 +15,5 @@ if __name__ == "__main__":
         reload=True,
         workers=1,
         log_config=log_config,
-        reload_dirs=["./"],
+        # reload_dirs=["./"],
     )
