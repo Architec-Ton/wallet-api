@@ -5,7 +5,6 @@ from tortoise.models import Model
 
 
 class AccountWalletConnection(Model):
-
     class Meta:
         table = "account_wallet_connection"
         unique_together = ("account", "wallet")

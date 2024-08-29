@@ -13,7 +13,6 @@ from .ton_controller import TonController
 
 
 class WalletController:
-
     def __init__(self):
         self.ton = TonController()
 

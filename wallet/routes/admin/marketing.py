@@ -11,7 +11,6 @@ router = APIRouter()
 
 @router.post("", response_model=AppMarketingOut)
 async def post_create_marketing(marketing_in: AppMarketingCreateIn):
-
     marketing_data = {
         "title": marketing_in.title,
         "url": marketing_in.url,

@@ -15,7 +15,6 @@ router = APIRouter()
 
 @router.post("", response_model=AppDetailOut)
 async def post_create_app(app_in: AppCreateIn):
-
     app_data = jsonable_encoder(
         {
             "url": app_in.url,
@@ -26,6 +25,7 @@ async def post_create_app(app_in: AppCreateIn):
             "icon_id": app_in.icon_id,
             "category_id": app_in.category_id,
             "slug": slugify(app_in.title_en),
+            "is_partner": app_in.is_partner,
         }
     )
     app = await App.create(**app_data)
@@ -72,7 +72,6 @@ async def get_apps():
 
 @router.get("s/preview", response_model=List[AppsByCategoriesOut])
 async def get_apps_by_cat():
-
     categories_with_apps = (
         await AppCategory.all()
         .order_by("order")

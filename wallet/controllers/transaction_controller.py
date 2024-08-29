@@ -6,7 +6,6 @@ from .ton.ton_client import TonClient
 
 
 class TransactionController:
-
     def __init__(self):
         self.client = TonClient()
 

@@ -7,7 +7,6 @@ from .wallet_controller import WalletController
 
 
 class BankController:
-
     def __init__(self):
         self.client = TonClient()
 

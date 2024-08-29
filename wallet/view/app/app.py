@@ -34,8 +34,8 @@ class AppCreateIn(ArchitectonBase):
     )
 
     icon_id: UUID | None = Field(default=None, example=None)
-
     attachments_ids: List[UUID] = Field(default=[], example=[])
+    is_partner: bool = Field(default=False)
 
 
 class AppUpdateIn(AppCreateIn):
