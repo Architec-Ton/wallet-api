@@ -26,14 +26,18 @@ async def post_auth(init_data: AuthIn):
         "iss": uuid.uuid4().hex,
     }
 
-    async def bg_update_account(init_data, init_data_raw : InitDataIn):
-        account = await AccountController.get_or_create(init_data_raw)
-        if init_data.init_ton and init_data.init_ton.address:
-            wallet = await WalletController.get_or_create(Address(init_data.init_ton.address))
+    async def bg_update_account(local_init_data, local_init_data_raw : InitDataIn):
+        if local_init_data_raw:
+            account = await AccountController.get_or_create(local_init_data_raw)
+            logging.info(f"Account: {account}")
+        else:
+            account = None
+        if local_init_data.init_ton and local_init_data.init_ton.address:
+            wallet = await WalletController.get_or_create(Address(local_init_data.init_ton.address))
             if wallet and account:
                 _ = await AccountController.get_or_create_wallet_connection(account, wallet)
                 _ = await WalletController.update_from_network(wallet)
-        logging.info(f"Account: {account}")
+
 
     if init_data.init_ton:
         payload["address"] = init_data.init_ton.address
@@ -42,19 +46,18 @@ async def post_auth(init_data: AuthIn):
 
     # s = telegram_validate(init_data)
     # logging.info(f"Validate: \n{s}")
-    init_data_raw = validate_telegram_init_data(init_data)
-
-    if init_data_raw is None:
-        raise APIException("Wrong credentials", 401)
-
-    if init_data_raw:
-        payload["name"] = init_data_raw.user.username
-        payload["lang"] = init_data_raw.user.language_code
-        payload["sub"] = str(init_data_raw.user.id)
+    init_data_raw = None
+    if init_data.init_data_raw and init_data.init_data_raw!="":
+        init_data_raw = validate_telegram_init_data(init_data)
+        if init_data_raw is None:
+            raise APIException("Wrong credentials", 401)
+        if init_data_raw:
+            payload["name"] = init_data_raw.user.username
+            payload["lang"] = init_data_raw.user.language_code
+            payload["sub"] = str(init_data_raw.user.id)
+        logging.info(f"Validate: \n{init_data_raw}")
 
     access_token = create_token(payload)
-
-    logging.info(f"Validate: \n{init_data_raw}")
 
     asyncio.ensure_future(bg_update_account(init_data, init_data_raw))
 
