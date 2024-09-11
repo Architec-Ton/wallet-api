@@ -43,9 +43,9 @@ async def post_imposrt_jettons():
     if TON_CLIENT_NETWORK == "testnet":
         jettons = [
             "kQBuFWV6jW_9F69A3qjn5rpqfG4eIMBJs9GFSrZU7d33EmIG",
-            #  "kQCkaGQTCUMUzu5b9IDYY4EjGI4hLIrnnKa5oAhgymxp9pES",  # BNK
+            "kQCkaGQTCUMUzu5b9IDYY4EjGI4hLIrnnKa5oAhgymxp9pES",  # BNK
             "kQDJ4yZlYHbwbUtFAtyk7YOMt7cWUY-Hk0TB9-pg2ZOxHMMf",
-            # "kQCidZd9oBoqDtTSp91BCTMvcpwGJkut7qdtOZKZXlVnBDb7",  # ARC
+            "kQCidZd9oBoqDtTSp91BCTMvcpwGJkut7qdtOZKZXlVnBDb7",  # ARC
             "EQDnRHbK5vJBLQyAnS6V8XNoRerCebnn9A2FlVlHtFVLFGZ-",
         ]
     else:
