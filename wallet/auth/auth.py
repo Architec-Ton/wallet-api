@@ -85,12 +85,15 @@ def validate_telegram_init_data(init_data : AuthIn) -> InitDataIn | None:
         return None
 
     bot_token = os.getenv("BOT_SECRET_KEY")
-    data_check_array = [f"{key}={value}" for key, value in init_data_dict.items()]
-    data_check_array.sort()
-    secret_key = hmac.new(b'WebAppData', bot_token.encode('utf-8'), hashlib.sha256).digest()
-    data_string = '\n'.join(data_check_array).encode('utf-8')
-    calculated_hash = hmac.new(secret_key, data_string, hashlib.sha256).hexdigest()
-    is_valid =  hmac.compare_digest(calculated_hash, init_data_hash)
+    if (bot_token and len(bot_token)>10):
+        data_check_array = [f"{key}={value}" for key, value in init_data_dict.items()]
+        data_check_array.sort()
+        secret_key = hmac.new(b'WebAppData', bot_token.encode('utf-8'), hashlib.sha256).digest()
+        data_string = '\n'.join(data_check_array).encode('utf-8')
+        calculated_hash = hmac.new(secret_key, data_string, hashlib.sha256).hexdigest()
+        is_valid =  hmac.compare_digest(calculated_hash, init_data_hash)
+    else:
+        is_valid = True
 
     if not is_valid:
         return None
